@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Verification Table</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Arial', sans-serif;
+        }
+
+        body {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            background-color: #f4f4f4;
+        }
+
+        .table-container {
+            background-color: #fff;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+            width: 90%;
+            max-width: 800px;
+            text-align: center;
+        }
+
+        h2 {
+            margin-bottom: 20px;
+            font-size: 24px;
+            color: #333;
+        }
+
+        .add-button {
+            display: inline-block;
+            margin-bottom: 20px;
+            background-color:rgb(83, 83, 234);
+            color: white;
+            padding: 10px 20px;
+            border-radius: 5px;
+            text-decoration: none;
+            transition: background-color 0.3s ease;
+            font-size: 16px;
+        }
+
+        .add-button i {
+            margin-right: 8px;
+        }
+
+        .add-button:hover {
+            background-color: #0056b3;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-bottom: 20px;
+        }
+
+        th, td {
+            padding: 12px;
+            text-align: center;
+            border-bottom: 1px solid #ddd;
+        }
+
+        th {
+            background-color: #34a0a4;
+            color: #fff;
+        }
+
+        td a {
+            color: #fff;
+            padding: 8px 12px;
+            border-radius: 5px;
+            text-decoration: none;
+            transition: background-color 0.3s ease;
+        }
+
+        td a.accept {
+            background-color: #28a745;
+        }
+
+        td a.accept:hover {
+            background-color: #218838;
+        }
+
+        td a.reject {
+            background-color: #dc3545;
+        }
+
+        td a.reject:hover {
+            background-color: #c82333;
+        }
+
+    </style>
+</head>
+<body>
+    <div class="table-container">
+        <h2>Event Team Management</h2>
+
+        <!-- Add Button with FontAwesome Icon -->
+        <a href="AddEventTeam" class="add-button"><i class="fas fa-plus"></i> Add New Member</a>
+
+        <table border="1">
+            <thead>
+                <tr>
+                    <th>Name</th>
+                    <th>Place</th>
+                    <th>Post</th>
+                    <th>Pin</th>
+                    <th>Phone</th>
+                    <th>Email</th>
+                </tr>
+            </thead>
+            <tbody>
+                {%for i in val%}
+                <tr>
+                    <td>{{i.EventName}}</td>
+                    <td>{{i.Place}}</td>
+                    <td>{{i.Post}}</td>
+                    <td>{{i.Pin}}</td>
+                    <td>{{i.Phone}}</td>
+                    <td>{{i.Email}}</td>
+                    <td><a href="EventTeamEdit/{{i.id}}" class="accept"><i class="fas fa-check"></i> Edit</a>
+                        <a href="EventTeamDlt/{{i.id}}" class="reject"><i class="fas fa-times"></i> Delete</a>
+                    </td>
+                    
+                </tr>
+                {%endfor%}
+            </tbody>
+        </table>
+    </div>
+</body>
+</html>

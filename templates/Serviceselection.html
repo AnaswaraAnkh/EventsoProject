@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Select User Type</title>
+    <style>
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Arial', sans-serif;
+}
+
+body {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    background-color: #f3f3f3;
+}
+
+.container {
+    background-color: #fff;
+    padding: 30px;
+    border-radius: 12px;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+    text-align: center;
+    width: 800px;
+}
+
+h2 {
+    font-size: 24px;
+    color: #333;
+    margin-bottom: 20px;
+    position: relative;
+}
+
+h2:after {
+    content: "";
+    width: 30px;
+    height: 4px;
+    background-color: #a04db4;
+    display: block;
+    margin: 10px auto 0;
+}
+
+.user-types {
+    display: flex;
+    justify-content: space-around;
+    margin-bottom: 20px;
+}
+
+.card {
+    background-color: #a04db4;
+    padding: 20px;
+    border-radius: 15px;
+    text-align: center;
+    width: 120px;
+    cursor: pointer;
+    transition: 0.3s;
+}
+
+.card.active {
+    background-color: #a04db4;
+    color: #fff;
+}
+
+.card:hover {
+    background-color: #d3d3d3;
+    
+}
+
+.icon {
+    font-size: 24px;
+    margin-bottom: 10px;
+}
+
+.action-buttons {
+    display: flex;
+    justify-content: center;
+    gap: 20px;
+}
+
+.back-button, .next-button {
+    padding: 10px 20px;
+    border: none;
+    border-radius: 50%;
+    cursor: pointer;
+    transition: 0.3s;
+}
+
+.back-button {
+    background-color: #e0e0e0;
+}
+
+.next-button {
+    background-color: #a04db4;
+    color: #fff;
+    font-size: 18px;
+}
+
+.next-button:hover {
+    background-color: #860f9b;
+}
+
+.back-button:hover {
+    background-color: #c42cdb;
+}
+a{
+    text-decoration: none;
+    color:white;
+}
+
+
+
+
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h2>Select Services</h2>
+        <div class="user-types">
+            <div class="card">
+                <div class="icon">
+                    <i class="fas fa-paint-brush"></i>
+                </div>
+                <a href="{% url 'CameraManreg' %}">Camera Man</a>
+            </div>
+            <div class="card">
+                <div class="icon">
+                    <i class="fas fa-pencil-alt"></i>
+                </div>
+                <a href="{% url 'MakeupArtistRegistration' %}">Makeup Artist</a>
+            </div>
+            <div class="card active">
+                <div class="icon">
+                    <i class="fas fa-code"></i>
+                </div>
+                <p>Event Team</p>
+            </div>
+        </div>
+        <div class="action-buttons">
+            <button class="back-button">Back</button>
+           
+        </div>
+    </div>
+    <script src="https://kit.fontawesome.com/a076d05399.js" crossorigin="anonymous"></script>
+</body>
+</html>

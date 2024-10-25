@@ -1,0 +1,255 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Verification Table with Modal</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Arial', sans-serif;
+        }
+
+        body {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            background-color: #f4f4f4;
+        }
+
+        .table-container {
+            background-color: #fff;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+            width: 90%;
+            max-width: 800px;
+            text-align: center;
+        }
+
+        h2 {
+            margin-bottom: 20px;
+            font-size: 24px;
+            color: #333;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-bottom: 20px;
+        }
+
+        th, td {
+            padding: 12px;
+            text-align: center;
+            border-bottom: 1px solid #ddd;
+        }
+
+        th {
+            background-color: #34a0a4;
+            color: #fff;
+        }
+
+        td a {
+            color: #fff;
+            padding: 8px 12px;
+            border-radius: 5px;
+            text-decoration: none;
+            transition: background-color 0.3s ease;
+        }
+
+        td a.accept {
+            background-color: #28a745;
+        }
+
+        td a.accept:hover {
+            background-color: #218838;
+        }
+
+        td a.reject {
+            background-color: #dc3545;
+        }
+
+        td a.reject:hover {
+            background-color: #c82333;
+        }
+
+        /* Modal styles */
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 999;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.5);
+            justify-content: center;
+            align-items: center;
+        }
+
+        .modal-content {
+            background-color: #fff;
+            padding: 20px;
+            border-radius: 10px;
+            width: 400px;
+            text-align: center;
+            position: relative;
+        }
+
+        .modal-header {
+            font-size: 20px;
+            margin-bottom: 20px;
+        }
+
+        .modal-close {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            font-size: 20px;
+            cursor: pointer;
+            color: #333;
+        }
+
+        .modal-body textarea {
+            width: 100%;
+            height: 100px;
+            padding: 10px;
+            margin-bottom: 20px;
+            border-radius: 5px;
+            border: 1px solid #ccc;
+        }
+
+        .modal-footer button {
+            padding: 10px 20px;
+            border: none;
+            border-radius: 5px;
+            background-color: #28a745;
+            color: white;
+            cursor: pointer;
+        }
+
+        .modal-footer button:hover {
+            background-color: #218838;
+        }
+
+    </style>
+</head>
+<body>
+    <div class="table-container">
+        <h2>Complaints</h2>
+        <table border="1">
+            <thead>
+                <tr>
+                    <th>UserName</th>
+                    
+                    <th>Complaint</th>
+                    <th>Date</th>
+                    <th>Action</th>
+                    
+                </tr>
+            </thead>
+            <tbody>
+                {% for i in val %}
+                <tr>
+                    <td>{{ i.USERLID.username }}</td>
+                    
+                    <td>{{i.Complaint }}</td>
+                    <td>{{ i.Date }}</td>
+                    <td>
+                        {% if i.Reply %}
+                            {{ i.Reply }}
+                        {% else %}
+                            <a href="#" class="accept reply-btn" data-id="{{ i.id }}">Reply</a>
+                        {% endif %}
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+
+    <!-- Modal Structure -->
+    <div id="replyModal" class="modal">
+        <div class="modal-content">
+            <span class="modal-close">&times;</span>
+            <div class="modal-header">Reply to Complaint</div>
+            <form id="replyForm" method="POST" enctype="multipart/form-data" action="/cam/CamComplaint">
+                {% csrf_token %}
+                <div class="modal-body">
+                    <textarea id="replyText" name="Reply" placeholder="Type your reply here"></textarea>
+                    <input type="hidden" id="complaintId" name="complaintId" value="{{i.id}}">
+                </div>
+                <div class="modal-footer">
+                    <button type="submit">Submit Reply</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <script>
+        // Get modal elements
+        var modal = document.getElementById('replyModal');
+        var closeModal = document.querySelector('.modal-close');
+        var replyButtons = document.querySelectorAll('.reply-btn');
+        var replyForm = document.getElementById('replyForm');
+        var complaintIdField = document.getElementById('complaintId');
+
+        // Open modal when reply button is clicked
+        replyButtons.forEach(function(button) {
+            button.addEventListener('click', function(event) {
+                event.preventDefault();
+                var complaintId = this.getAttribute('data-id');
+                complaintIdField.value = complaintId;  // Set the complaint ID in the form
+                modal.style.display = 'flex';
+            });
+        });
+
+        // Close modal when close button is clicked
+        closeModal.addEventListener('click', function() {
+            modal.style.display = 'none';
+        });
+
+        // Close modal if clicked outside modal content
+        window.addEventListener('click', function(event) {
+            if (event.target == modal) {
+                modal.style.display = 'none';
+            }
+        });
+
+        // Submit the reply form (AJAX)
+        replyForm.addEventListener('submit', function(event) {
+    event.preventDefault();
+    var formData = new FormData(replyForm);
+
+    // Use AJAX to send the reply to the server (using the correct endpoint)
+    fetch('/cam/CamComplaint', {
+        method: 'POST',
+        body: formData,
+        headers: {
+            'X-CSRFToken': '{{ csrf_token }}'
+        },
+    })
+    .then(response => response.json())
+    .then(data => {
+        if (data.success) {
+            alert('Reply submitted successfully!');
+            modal.style.display = 'none';
+            // Optionally, update the table row with the reply
+            location.reload(); // Reload the page to show the updated reply
+        } else {
+            alert('There was an error submitting the reply: ' + data.message);
+        }
+    })
+    .catch(error => {
+        console.error('Error:', error);
+    });
+});
+
+    </script>
+</body>
+</html>

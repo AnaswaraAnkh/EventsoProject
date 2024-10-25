@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Complaint Reply Form</title>
+    <link rel="stylesheet" href="">
+    <style>* {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+    }
+    
+    body {
+        font-family: Arial, sans-serif;
+        background-color: #f4f4f9;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        height: 100vh;
+    }
+    
+    .container {
+        background-color: #fff;
+        padding: 25px;
+        border-radius: 10px;
+        box-shadow: 0 0 15px rgba(0, 0, 0, 0.1);
+        width: 400px;
+    }
+    
+    h2 {
+        text-align: center;
+        margin-bottom: 20px;
+    }
+    
+    .form-group {
+        margin-bottom: 15px;
+    }
+    
+    label {
+        display: block;
+        margin-bottom: 5px;
+    }
+    
+    input[type="text"],
+    textarea,
+    select {
+        width: 100%;
+        padding: 10px;
+        border: 1px solid #ccc;
+        border-radius: 5px;
+    }
+    
+    textarea {
+        resize: vertical;
+    }
+    
+    button {
+        width: 100%;
+        padding: 12px;
+        background-color:rosybrown;
+        color: white;
+        border: none;
+        border-radius: 5px;
+        cursor: pointer;
+    }
+    
+    button:hover {
+        background-color:rgb(174, 117, 117);
+    }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h2>Complaint Reply Form</h2>
+        <form action="" method="POST">
+            {%csrf_token%}
+            <div>
+                <label for="reply">Username</label>
+                <input type="text" value="{{val.USERLID.First_Name}}">
+            </div>
+            
+            <div class="form-group">
+                <label for="reply">Your Reply</label>
+                <textarea id="reply" name="Reply" rows="6" required></textarea>
+            </div>
+            
+            <div class="form-group">
+                <button type="submit">Submit Reply</button>
+            </div>
+        </form>
+    </div>
+</body>
+</html>

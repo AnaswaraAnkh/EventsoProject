@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Add Photography Skill</title>
+  <style>
+    form {
+      max-width: 600px;
+      margin: 0 auto;
+      padding: 20px;
+      background-color: #f7f7f7;
+      border-radius: 8px;
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+      font-family: Arial, sans-serif;
+    }
+
+    form label {
+      display: block;
+      margin-bottom: 8px;
+      font-weight: bold;
+      color: #333;
+    }
+
+    form input[type="text"],
+    form input[type="number"],
+    form textarea,
+    form select {
+      width: 100%;
+      padding: 10px;
+      margin-bottom: 15px;
+      border: 1px solid #ccc;
+      border-radius: 4px;
+      font-size: 16px;
+    }
+
+    form button[type="submit"] {
+      background-color: #28a745;
+      color: white;
+      padding: 12px 20px;
+      border: none;
+      border-radius: 4px;
+      cursor: pointer;
+      font-size: 16px;
+    }
+
+    form button[type="submit"]:hover {
+      background-color: #218838;
+    }
+
+  </style>
+</head>
+<body>
+
+    <form action="" method="POST">
+        {% csrf_token %}
+        <label for="skill-title">Username</label>
+        <input type="text" id="" name="username" required><br><br>
+    
+        <label for="skill-title">Skill Title:</label>
+        <input type="text" id="skill-title" name="skill_title" required><br><br>
+    
+        <label for="description">Description:</label>
+        <textarea id="description" name="description" required></textarea><br><br>
+    
+        <label for="rate">Rate/Cost (Per Hour or Project):</label>
+        <input type="number" id="rate" name="rate" placeholder="e.g., $50"><br><br>
+    
+        <label for="package">Select Package:</label>
+        <select id="package" name="package" onchange="updatePrice()" required>
+            <option value="">-- Select a Package --</option>
+            <option value="wedding">Wedding Package</option>
+            <option value="portrait">Portrait Package</option>
+            <option value="event">Event Package</option>
+        </select><br><br>
+    
+        <label for="price">Price per Day:</label>
+        <input type="text" id="price" name="price" placeholder="Price will auto-fill" readonly><br><br>
+    
+        <button type="submit">Submit</button>
+    </form>
+
+<script>
+  // Object mapping package options to their prices
+  const packagePrices = {
+    'wedding': 500,
+    'portrait': 200,
+    'event': 300
+  };
+
+  // Function to update the price based on the selected package
+  function updatePrice() {
+    const packageSelect = document.getElementById('package');
+    const priceInput = document.getElementById('price');
+    
+    // Get the selected package value
+    const selectedPackage = packageSelect.value;
+    
+    // If a valid package is selected, update the price input
+    if (selectedPackage) {
+      priceInput.value = packagePrices[selectedPackage];
+    } else {
+      priceInput.value = ''; // Clear the field if no package is selected
+    }
+  }
+</script>
+
+</body>
+</html>

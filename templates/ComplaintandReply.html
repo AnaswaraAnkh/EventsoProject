@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Verification Table</title>
+    <link rel="stylesheet" href="">
+    <style>
+        * {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Arial', sans-serif;
+}
+
+body {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    background-color: #f4f4f4;
+}
+
+.table-container {
+    background-color: #fff;
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+    width: 90%;
+    max-width: 800px;
+    text-align: center;
+}
+
+h2 {
+    margin-bottom: 20px;
+    font-size: 24px;
+    color: #333;
+}
+
+table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-bottom: 20px;
+}
+
+th, td {
+    padding: 12px;
+    text-align: center;
+    border-bottom: 1px solid #ddd;
+}
+
+th {
+    background-color: #34a0a4;
+    color: #fff;
+}
+
+td a {
+    color: #fff;
+    padding: 8px 12px;
+    border-radius: 5px;
+    text-decoration: none;
+    transition: background-color 0.3s ease;
+}
+
+td a.accept {
+    background-color: #28a745;
+}
+
+td a.accept:hover {
+    background-color: #218838;
+}
+
+td a.reject {
+    background-color: #dc3545;
+}
+
+td a.reject:hover {
+    background-color: #c82333;
+}
+
+    </style>
+
+</head>
+<body>
+    <div class="table-container">
+        <h2>Complaints</h2>
+        <table border="1">
+            <thead>
+                <tr>
+                    
+                    <th>UserName</th>
+                    <th>Service Provider Name</th>
+                    <th>Service offered</th>
+                    <th>Complaint</th>
+                    <th>Date</th>
+                    <th>Action</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for complaint in val %}
+                <tr>
+                    <td>{{ complaint.user_username }}</td>  <!-- User who made the complaint -->
+                    <td>{{ complaint.service_provider_username }}</td>
+                    <td>{{ complaint.service_provider_user_type }}</td>
+                    <td>{{ complaint.complaint_text }}</td>
+                    <td>{{ complaint.created_at }}</td>
+                    <td>
+                        {% if complaint.Reply %}
+                            {{ complaint.Reply }}
+                        {% else %}
+                            <a href="Reply/{{ complaint.id }}" class="accept"><i class="fas fa-check"></i> Reply</a>
+                        {% endif %}
+                    </td>
+                </tr>
+                {% endfor %}
+                
+            </tbody>
+        </table>
+    </div>
+</body>
+</html>

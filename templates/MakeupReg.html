@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Makeup Artist Form</title>
+    <link rel="stylesheet" href="">
+    <style>
+        body {
+    font-family: Arial, sans-serif;
+    background-color: #f4f4f4;
+    margin: 0;
+    padding: 0;
+}
+
+.container {
+    width: 400px;
+    margin: 50px auto;
+    background-color: #fff;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+h1 {
+    text-align: center;
+    color: #333;
+    margin-bottom: 20px;
+}
+
+form {
+    display: flex;
+    flex-direction: column;
+}
+
+label {
+    font-size: 14px;
+    margin-bottom: 5px;
+    color: #555;
+}
+
+input[type="text"], input[type="email"], input[type="tel"], textarea {
+    padding: 10px;
+    margin-bottom: 15px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    font-size: 14px;
+}
+
+textarea {
+    resize: vertical;
+}
+
+.radio-group {
+    display: flex;
+    gap: 10px;
+    margin-bottom: 20px;
+}
+
+input[type="radio"] {
+    margin-right: 5px;
+}
+
+button {
+    padding: 10px;
+    background-color: #4CAF50;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+}
+
+button:hover {
+    background-color: #45a049;
+}
+
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Makeup Artist Details</h1>
+        <form action="" method="post" enctype="multipart/form-data">
+            {%csrf_token%}
+            <label for="name">Name:</label>
+            <input type="text" id="name" name="MakeupArtist" placeholder="Enter artist's name" required>
+
+            <label for="address">Address:</label>
+            <input type="text" id="address" name="Address" placeholder="Enter address" required>
+
+            
+
+            <label for="phone">Phone Number:</label>
+            <input type="tel" id="phone" name="Phone" placeholder="Enter phone number" required>
+
+            <label for="details">Details:</label>
+            <textarea id="details" name="Details" rows="4" placeholder="Provide additional details"></textarea>
+
+            <label for="specialized">Specialized in:</label>
+            <div class="radio-group">
+                <input type="radio" id="groom" name="Specialised" value="groom">
+                <label for="groom">Groom</label>
+
+                <input type="radio" id="bride" name="Specialised" value="bride">
+                <label for="bride">Bride</label>
+
+                <input type="radio" id="both" name="Specialised" value="both">
+                <label for="both">Both</label>
+            </div>
+            <label for="phone">User Name</label>
+            <input type="text" id="User Name" name="username" placeholder="Enter User Name" required>
+            <label for="phone">Password</label>
+            <input type="text" id="Password" name="password" placeholder="Enter Password" required>
+
+            <button type="submit">Submit</button>
+        </form>
+    </div>
+</body>
+</html>

@@ -1,0 +1,47 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Registration Form</title>
+    <link rel="stylesheet" href="{% static 'Eentteam.css' %}">
+</head>
+<body>
+    <div class="container">
+        <h2>Updation Form</h2>
+        <form action="" method="POST">
+            {%csrf_token%}
+            <div class="form-group">
+                <label for="name">Event Team Name</label>
+                <input type="text" id="name" name="EventName" value="{{val.EventName}}" required>
+            </div>
+            <div class="form-group">
+                <label for="email">Place</label>
+                <input type="text" id="email" name="Place" value="{{val.Place}}" required>
+            </div>
+            <div class="form-group">
+                <label for="email">Post</label>
+                <input type="text" id="email" name="Post" value="{{val.Post}}">
+            </div>
+            <div class="form-group">
+                <label for="email">Pin</label>
+                <input type="text" id="email" name="Pin" value="{{val.Pin}}">
+            </div>
+            <div class="form-group">
+                <label for="email">Phone</label>
+                <input type="text" id="email" name="Phone" value="{{val.Phone}}">
+            </div>
+            <div class="form-group">
+                <label for="password">Email</label>
+                <input type="email" id="password" name="Email" value="{{val.Email}}" required>
+            </div>
+            
+            
+            <div class="form-group">
+                <button type="submit">Update</button>
+            </div>
+        </form>
+    </div>
+</body>
+</html>
