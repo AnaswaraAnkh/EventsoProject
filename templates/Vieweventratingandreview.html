@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Customer Ratings and Reviews</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            background-color: #f5f5f5;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+        }
+        .container {
+            max-width: 500px;
+            width: 100%;
+            padding: 20px;
+        }
+        h2 {
+            text-align: center;
+            font-size: 32px;
+            color: #333;
+            margin-bottom: 30px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            font-weight: bold;
+        }
+        .review-card {
+            background-color: white;
+            padding: 20px;
+            border-radius: 15px;
+            margin-bottom: 20px;
+            box-shadow: 0 6px 12px rgba(0, 0, 0, 0.1);
+            transition: transform 0.3s ease;
+        }
+        .review-card:hover {
+            transform: translateY(-5px);
+        }
+        .review-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 15px;
+        }
+        .customer-name {
+            font-size: 18px;
+            font-weight: 600;
+            color: #007bff;
+        }
+        .review-date {
+            font-size: 14px;
+            color: #777;
+        }
+        .rating {
+            display: flex;
+            align-items: center;
+        }
+        .rating-stars i {
+            color: #f39c12;
+            font-size: 16px;
+            margin-right: 5px;
+        }
+        .review-comment {
+            font-size: 16px;
+            color: #555;
+            font-style: italic;
+            margin-top: 15px;
+        }
+        @media only screen and (max-width: 768px) {
+            .review-card {
+                padding: 15px;
+            }
+            h2 {
+                font-size: 24px;
+            }
+            .customer-name {
+                font-size: 16px;
+            }
+            .review-comment {
+                font-size: 14px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h2>Customer Ratings and Reviews</h2>
+
+        <!-- Loop through reviews and create review cards -->
+        {% for i in val %}
+        <div class="review-card">
+            <div class="review-header">
+                <div class="customer-name">{{ i.USERLID.username }}</div>
+                <div class="review-date">{{ i.Date }}</div>
+            </div>
+            <div class="rating" data-rating="{{ i.Rating }}">
+                <div class="rating-stars"></div>
+            </div>
+            <div class="review-comment">{{ i.Review }}</div>
+        </div>
+        {% endfor %}
+    </div>
+
+    <script>
+        // Function to render stars based on rating
+        function renderStars() {
+            // Select all review cards that contain ratings
+            const ratings = document.querySelectorAll('.rating');
+
+            ratings.forEach(function(ratingElement) {
+                // Get the rating value from the data attribute
+                const ratingValue = parseFloat(ratingElement.getAttribute('data-rating'));
+                const ratingStarsDiv = ratingElement.querySelector('.rating-stars');
+                
+                let fullStars = Math.floor(ratingValue);  // Full stars
+                let halfStar = ratingValue % 1 >= 0.5 ? 1 : 0;  // Half star if exists
+                let emptyStars = 5 - fullStars - halfStar;  // Remaining empty stars
+
+                // Add full stars
+                for (let i = 0; i < fullStars; i++) {
+                    ratingStarsDiv.innerHTML += '<i class="fa fa-star"></i>';
+                }
+
+                // Add half star if exists
+                if (halfStar) {
+                    ratingStarsDiv.innerHTML += '<i class="fa fa-star-half"></i>';
+                }
+
+                // Add empty stars
+                for (let i = 0; i < emptyStars; i++) {
+                    ratingStarsDiv.innerHTML += '<i class="fa fa-star-o"></i>';
+                }
+            });
+        }
+
+        // Call the function after the DOM has loaded
+        document.addEventListener('DOMContentLoaded', renderStars);
+    </script>
+</body>
+</html>

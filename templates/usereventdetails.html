@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Select Box with Details</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
+            color: #333;
+            margin: 0;
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+        h1 {
+            color: #5D6D7E;
+        }
+        form {
+            background-color: #fff;
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+            padding: 20px;
+            margin-bottom: 20px;
+            width: 300px;
+            text-align: center;
+        }
+        select, button {
+            width: 100%;
+            padding: 10px;
+            margin-top: 10px;
+            border-radius: 5px;
+            border: 1px solid #ddd;
+            font-size: 16px;
+            transition: border-color 0.3s;
+        }
+        select:focus, button:focus {
+            border-color: #5D6D7E;
+            outline: none;
+        }
+        button {
+            background-color: #5D6D7E;
+            color: white;
+            cursor: pointer;
+            border: none;
+        }
+        button:hover {
+            background-color: #4A5962;
+        }
+        table {
+            border-collapse: collapse;
+            width: 60%;
+            margin-top: 20px;
+            background-color: #fff;
+            border-radius: 8px;
+            overflow: hidden;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+        }
+        th, td {
+            border: 1px solid #dddddd;
+            text-align: left;
+            padding: 12px;
+        }
+        th {
+            background-color: #5D6D7E;
+            color: white;
+        }
+        tr:nth-child(even) {
+            background-color: #f9f9f9;
+        }
+    </style>
+</head>
+<body>
+
+    <h1>WELCOME</h1>
+    <h3>Select Option</h3>
+    <form id="selectionForm" method="post" action="">
+        {% csrf_token %}
+        <label for="menuSelect">Choose an option:</label>
+        <select id="menuSelect" name="select">
+            <option value="">--Select--</option>
+            <option value="decor" {% if option == 'decor' %}selected{% endif %}>Decor</option>
+            <option value="food" {% if option == 'food' %}selected{% endif %}>Food Menu</option>
+        </select>
+        <button type="submit">Submit</button>
+    </form>
+
+    {% if option == "decor" %}
+    <table>      
+        <thead>
+            <tr>
+                <th>Name</th>
+                <th>Category</th>
+                <th>Price</th>
+                <th>Description</th>
+                <th>Image</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for item in val %}
+            <tr>
+                <td>{{ item.name }}</td>
+                <td>{{ item.category }}</td>
+                <td>{{ item.price }}</td>
+                <td>{{ item.description }}</td>
+                <td><img src="{{ item.image.url }}" alt="{{ item.name }}" width="100"></td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+    {% endif %}
+
+    {% if option == "food" %}
+    <table>
+        <thead>
+            <tr>
+                <th>Catering Name</th>
+                <th>Catering Type</th>
+                <th>Cost per Plate</th>
+                <th>Location</th>
+                <th>Food Menu</th>
+                <th>Image</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for catering_service in valu %}
+            <tr>
+                <td>{{ catering_service.catering_name }}</td>
+                <td>{{ catering_service.catering_type }}</td>
+                <td>{{ catering_service.cost_per_plate }}</td>
+                <td>{{ catering_service.address }}</td>
+                <td>
+                    {% for food in catering_service.food_menu %}
+                        {{ food.name }}{% if not forloop.last %}, {% endif %}
+                    {% endfor %}
+                </td>
+                <td>
+                    {% for food in catering_service.food_menu %}
+                        {% if food.image %}
+                            <img src="{{ food.image.url }}" alt="{{ food.name }}" width="100">
+                        {% else %}
+                            No image available
+                        {% endif %}
+                    {% endfor %}
+                </td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+    {% endif %}
+
+</body>
+</html>

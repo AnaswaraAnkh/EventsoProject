@@ -23,5 +23,7 @@ urlpatterns = [
     path('admin/', admin.site.urls),
     path('',include('Admin.urls')),
     path('cam/',include('Cameraman.urls')),
-    path('mak/',include('MakeupArtist.urls'))
+    path('mak/',include('MakeupArtist.urls')),
+    path('event/',include('TeamEvent.urls')),
+    path('user/',include('User_Profile.urls')),
 ]+static(settings.MEDIA_URL,document_root=settings.MEDIA_ROOT)

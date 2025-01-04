@@ -48,7 +48,7 @@ class Payment(models.Model):
     amount = models.DecimalField(max_digits=10, decimal_places=2)
     payment_method=models.CharField(max_length=50, blank=True, null=True)
     status=models.CharField(max_length=50, blank=True, null=True)
-    USERLID = models.ForeignKey(User_Table,on_delete=models.CASCADE,blank=True,null=True,related_name='user_payment')
+    USERLID = models.ForeignKey(LoginTable,on_delete=models.CASCADE,blank=True,null=True,related_name='user_payment')
     SERVICEPROVIDERLID = models.ForeignKey(LoginTable, on_delete=models.CASCADE, null=True, blank=True, related_name='serviceprovider_payment')
     is_active = models.BooleanField(default=True)
     created_at = models.DateTimeField(auto_now_add=True, null=True, blank=True)

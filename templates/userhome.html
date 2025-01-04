@@ -1,0 +1,243 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Roboto', sans-serif;
+        }
+
+        .navbar {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 20px 50px;
+            background-color: white;
+        }
+
+        .logo {
+            font-size: 24px;
+            font-weight: bold;
+            color: #333;
+        }
+
+        .navbar ul {
+            list-style: none;
+            display: flex;
+        }
+
+        .navbar ul li {
+            margin-left: 20px;
+        }
+
+        .navbar ul li a {
+            text-decoration: none;
+            color: #333;
+            font-size: 16px;
+        }
+
+        .navbar .contact-number {
+            background-color: #ff7e6b;
+            color: white;
+            padding: 10px 20px;
+            border-radius: 5px;
+            font-weight: bold;
+        }
+
+        /* Background section */
+        .one {
+            position: relative;
+            background-image: url('https://th.bing.com/th/id/OIP.ycrAEW37EnQUrLkIeR7t8QHaDt?w=319&h=175&c=7&r=0&o=5&dpr=1.3&pid=1.7');
+            background-repeat: no-repeat;
+            background-size: cover;
+            height: 800px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            color: #fff;
+        }
+
+        .one::before {
+            content: "";
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.5);
+            z-index: 1;
+        }
+
+        .two {
+            position: relative;
+            text-align: center;
+            font-size: 2.5rem;
+            font-weight: bold;
+            color: #fff;
+            z-index: 2;
+        }
+
+        .two span {
+            display: block;
+            font-size: 3rem;
+            color: #ff4081;
+            font-family: 'Brush Script MT', cursive;
+        }
+
+        .card-container {
+            display: flex;
+            justify-content: space-between;
+            gap: 20px;
+            padding: 40px;
+            background-image: linear-gradient(pink, blue);
+        }
+
+        .card {
+            background-color: white;
+            border-radius: 8px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+            overflow: hidden;
+            width: 350px;
+            height: 400px;
+            text-align: center;
+            transition: transform 0.3s;
+        }
+
+        .card:hover {
+            transform: translateY(-10px);
+        }
+
+        .card img {
+            width: 100%;
+            height: 150px;
+            object-fit: cover;
+        }
+
+        .card-content {
+            padding: 20px;
+        }
+
+        .card-title {
+            font-size: 1.5rem;
+            font-weight: bold;
+            color: #333;
+            margin-bottom: 10px;
+        }
+
+        .card-description {
+            font-size: 1rem;
+            color: #666;
+        }
+        .services {
+            margin-left: 650px;
+            height: 70px;
+            font-size: 30px;
+            font-weight: bolder;
+            font-family: monospace;
+            padding-top: 15px;
+        }
+
+        /* Gallery Section */
+        .gallery {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 20px;
+            padding: 40px;
+            background-image: linear-gradient(rgb(228, 129, 23), blue);
+        }
+
+        .gallery img {
+            width: 100%;
+            height: 400px;
+            object-fit: cover;
+            border-radius: 8px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+        }
+
+        /* Footer Section */
+        .footer {
+            background-color: #333;
+            color: white;
+            text-align: center;
+            padding: 20px;
+            font-size: 1rem;
+            font-family: sans-serif;
+        }
+    </style>
+</head>
+<body>
+   
+    <header class="navbar">
+        <div class="logo">EVENTSO</div>
+        <nav>
+            <ul>
+                <li><a href="#home">Home</a></li>
+                <li><a href="#services">Services</a></li>
+                <li><a href="#gallery">Gallery</a></li>
+                <li><a href="Viewuserbookingstatus">Booking Status</a></li>
+                <li><a href="RatingandReview">Review</a></li>
+                <li><a href="UserComplaintadd">Complaint</a></li>
+                <!-- <li><a href="MakePayment">Payment</a></li> -->
+            </ul>
+        </nav>
+        <div class="contact-number">+123 456 789</div>
+    </header>
+    
+    <div class="one">
+        <div class="two">
+            For making your special moment an <br>
+            <span>unforgettable celebration</span>
+        </div>
+    </div>
+
+    <div class="services" id="services">Services</div>
+    <div class="card-container">
+        <div class="card">
+            <img src="https://th.bing.com/th/id/OIP.xf3ObaUUMNzD-6ET-iT-HQHaE8?w=270&h=180&c=7&r=0&o=5&dpr=1.3&pid=1.7" alt="Image 1">
+            <div class="card-content">
+                <div class="card-title"><a href="UserEvntPlan">Event Planning</a></div>
+                <p class="card-description">We bring your dreams to life with seamless event planning and execution.</p>
+            </div>
+        </div>
+
+        <div class="card">
+            <img src="https://th.bing.com/th/id/OIP.4b9fSq9bFggp427lJVYaJwHaE8?w=234&h=180&c=7&r=0&o=5&dpr=1.3&pid=1.7" alt="Image 2">
+            <div class="card-content">
+                <div class="card-title"><a href="UserMakeup">Makeup</a></div>
+                <p class="card-description">Delicious menus crafted to perfection for an unforgettable experience.</p>
+            </div>
+        </div>
+
+        <div class="card">
+            <img src="https://th.bing.com/th/id/OIP.bZlKbAcLVHw_WXeCZ7XomAHaF7?&w=160&h=240&c=7&dpr=1.3&pid=ImgDet" alt="Image 3">
+            <div class="card-content">
+                <div class="card-title"><a href="Camerauser">CameraMan</a></div>
+                <p class="card-description">Elegant and customized decor to match the theme of your celebration.</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Gallery Section -->
+    <div class="services" id="gallery">Gallery</div>
+    <div class="gallery">
+        <img src="https://th.bing.com/th/id/OIP.bfJ0DtPCT4-Be-0WwUMAHAHaE8?w=198&h=183&c=7&r=0&o=5&dpr=1.3&pid=1.7" alt="Gallery Image 1">
+        <img src="https://th.bing.com/th/id/OIP.W5v6zm--8M0RsDGQWi8oyAHaE8?w=239&h=180&c=7&r=0&o=5&dpr=1.3&pid=1.7" alt="Gallery Image 2">
+        <img src="https://th.bing.com/th/id/OIP.bfJ0DtPCT4-Be-0WwUMAHAHaE8?w=198&h=183&c=7&r=0&o=5&dpr=1.3&pid=1.7" alt="Gallery Image 3">
+        <img src="https://th.bing.com/th/id/OIP.NxPCHeTX7hp2kgBWxzT3DQHaE8?w=280&h=186&c=7&r=0&o=5&dpr=1.3&pid=1.7" alt="Gallery Image 4">
+    </div>
+
+    <!-- Footer Section -->
+    <footer class="footer">
+        &copy; 2024 EVENTSO | All Rights Reserved | Privacy Policy
+    </footer>
+
+</body>
+</html>

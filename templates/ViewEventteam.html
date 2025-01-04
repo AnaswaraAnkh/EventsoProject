@@ -40,7 +40,7 @@
         .add-button {
             display: inline-block;
             margin-bottom: 20px;
-            background-color:rgb(83, 83, 234);
+            background-color: rgb(83, 83, 234);
             color: white;
             padding: 10px 20px;
             border-radius: 5px;
@@ -79,6 +79,8 @@
             padding: 8px 12px;
             border-radius: 5px;
             text-decoration: none;
+            margin: 0 5px; /* Add margin to space out buttons */
+            display: inline-block;
             transition: background-color 0.3s ease;
         }
 
@@ -97,7 +99,6 @@
         td a.reject:hover {
             background-color: #c82333;
         }
-
     </style>
 </head>
 <body>
@@ -116,23 +117,24 @@
                     <th>Pin</th>
                     <th>Phone</th>
                     <th>Email</th>
+                    <th>Actions</th>
                 </tr>
             </thead>
             <tbody>
-                {%for i in val%}
+                {% for i in val %}
                 <tr>
-                    <td>{{i.EventName}}</td>
-                    <td>{{i.Place}}</td>
-                    <td>{{i.Post}}</td>
-                    <td>{{i.Pin}}</td>
-                    <td>{{i.Phone}}</td>
-                    <td>{{i.Email}}</td>
-                    <td><a href="EventTeamEdit/{{i.id}}" class="accept"><i class="fas fa-check"></i> Edit</a>
-                        <a href="EventTeamDlt/{{i.id}}" class="reject"><i class="fas fa-times"></i> Delete</a>
+                    <td>{{ i.EventName }}</td>
+                    <td>{{ i.Place }}</td>
+                    <td>{{ i.Post }}</td>
+                    <td>{{ i.Pin }}</td>
+                    <td>{{ i.Phone }}</td>
+                    <td>{{ i.Email }}</td>
+                    <td>
+                        <a href="EventTeamEdit/{{ i.id }}" class="accept"><i class="fas fa-check"></i> Edit</a>
+                        <a href="EventTeamDlt/{{ i.id }}" class="reject"><i class="fas fa-times"></i> Delete</a>
                     </td>
-                    
                 </tr>
-                {%endfor%}
+                {% endfor %}
             </tbody>
         </table>
     </div>

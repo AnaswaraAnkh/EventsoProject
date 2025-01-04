@@ -23,7 +23,9 @@ class Login(View):
         landing_page_url = {
             "Admin": "Adminhome",
             "CameraMan":"Cameramanhome",
-            "MakeupArtist":"MakeupArtisthome"
+            "MakeupArtist":"MakeupArtisthome",
+            "EventTeam": "Eventteam_home",
+            "USER":"User_Home"
 
 
 
@@ -117,7 +119,7 @@ class AddEventTeam(View):
         if form.is_valid():
             reg_form=form.save(commit=False)
             rf=LoginTable.objects.create_user(user_type='EventTeam',username=request.POST['username'],password=request.POST['password'])
-            reg_form.user=rf
+            reg_form.LOGINID=rf
             rf.save()
             reg_form.save()
 
@@ -143,12 +145,7 @@ class EventTeamEdit(View):
             return HttpResponse('''<script>alert("successfully updated");window.location="/ViewEventTeam"</script>''')
         return HttpResponse('''<script>alert("Failed");window.location="/ViewEventTeam"</script>''')
     
-class EventTeamDlt(View):
-    def get(self,request,T_id):
-        obj=EventTeamProfile.objects.get(id=T_id)
-        obj.is_active=False
-        obj.save()
-        return HttpResponse('''<script>alert("successfully deleted");window.location="/ViewEventTeam"</script>''')
+
     
     
 class Verify_Cameraman(View):
@@ -156,6 +153,9 @@ class Verify_Cameraman(View):
         
         obj=CameraManProfile.objects.filter(LOGINID__user_type='Pending')
         print(obj)
+        if not obj:
+            message = "No users to verify"
+            return render(request, 'Viewcameraman.html', {'message': message})
         return render(request,'Viewcameraman.html',{'val':obj})
     
 
@@ -188,6 +188,9 @@ class Verify_MakeupArtist(View):
         
         obj=MakeupArtistProfile.objects.filter(LOGINID__user_type='Pending')
         print(obj)
+        if not obj:
+            message = "No users to verify"
+            return render(request, 'Viewcameraman.html', {'message': message})
         return render(request,'ViewMakeupArtist.html',{'val':obj})
     
 class Accept_MakeupArtist(View):

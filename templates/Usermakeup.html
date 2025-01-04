@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Makeup Artists</title>
+    <style>
+        .card-container {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 20px;
+            justify-content: center;
+        }
+
+        .card {
+            width: 390px;
+            height: 300px;
+            background: #07182E;
+            position: relative;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            overflow: hidden;
+            border-radius: 20px;
+            color: white;
+            text-align: center;
+            padding: 20px;
+        }
+
+        .card h2 {
+            z-index: 1;
+            font-size: 2em;
+            margin-bottom: 10px;
+        }
+
+        .divone {
+            z-index: 1;
+            font-size: 1em;
+            margin-bottom: 10px;
+        }
+
+        .card h3, .card p {
+            z-index: 1;
+            margin: 5px 0;
+        }
+
+        .card a {
+            z-index: 1;
+            color: #00B7FF;
+            text-decoration: none;
+            font-weight: bold;
+            margin-top: 10px;
+        }
+
+        .card .rating-stars {
+            z-index: 1;
+            font-size: 1.2em;
+            color: gold;
+        }
+
+    </style>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css">
+</head>
+<body>
+    <div class="card-container">
+        {% for artist_data in artists %}
+        <div class="card">
+            <h2>{{ artist_data.artist.MakeupArtist }}</h2>
+            <h3>{{ artist_data.artist.Address }}</h3>
+            
+            <!-- Display Ratings as Stars -->
+            <!-- <div class="rating-stars">
+                {% if artist_data.ratings %}
+                    {% for rating in artist_data.ratings %}
+                        {% for i in "12345" %}
+                            {% if forloop.counter <= rating %}
+                                <i class="fa fa-star"></i>
+                            {% else %}
+                                <i class="fa fa-star-o"></i>
+                            {% endif %}
+                        {% endfor %}
+                        <br> <!-- Adds a line break between different ratings if multiple ratings exist -->
+                    {% endfor %}
+                {% else %}
+                    <p>No ratings available</p>
+                {% endif %}
+            </div> -->
+
+            <div class="divone">
+                <label>Specialized in:</label>
+                <input type="radio" value="Bride" {% if artist_data.artist.Specialised == "bride" %}checked{% endif %}>Bride
+                <input type="radio" value="Groom" {% if artist_data.artist.Specialised == "groom" %}checked{% endif %}>Groom 
+                <input type="radio" value="Both" {% if artist_data.artist.Specialised == "both" %}checked{% endif %}>Both
+            </div>
+            
+            <a href="MakeupGallery/{{ artist_data.artist.LOGINID }}">Gallery</a>
+            <a href="Makeupuserbooking/{{ artist_data.artist.LOGINID }}">Book Now</a>
+        </div>
+        {% endfor %}
+    </div>
+</body>
+</html>

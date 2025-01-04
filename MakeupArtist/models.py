@@ -15,3 +15,20 @@ class MakeupArtistProfile(models.Model):
     updated_at = models.DateTimeField(auto_now_add=True, null=True, blank=True)
 
 
+class Makeupbooking(models.Model):
+    USERLID = models.ForeignKey(LoginTable,on_delete=models.CASCADE,related_name='bookings')
+    MAKEUPLID = models.ForeignKey(LoginTable,on_delete=models.CASCADE,related_name='makeup_bookings')
+    Event = models.CharField(max_length=300, blank=True, null=True)
+    Phone_Number = models.BigIntegerField(blank=True, null=True)
+    Date = models.DateField(blank=True, null=True)  # Removed max_length, not applicable for DateField
+
+    STATUS_CHOICES = [
+        ('PENDING', 'Pending'),
+        ('CONFIRMED', 'Confirmed'),
+        ('CANCELLED', 'Cancelled')
+    ]
+    Status = models.CharField(max_length=10, choices=STATUS_CHOICES, default='PENDING')
+    is_active = models.BooleanField(default=True)
+    created_at = models.DateTimeField(auto_now_add=True, null=True, blank=True)
+    updated_at = models.DateTimeField(auto_now=True, null=True, blank=True)  # Use auto_now for updated_at
+

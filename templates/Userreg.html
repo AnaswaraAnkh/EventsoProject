@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>User Registration</title>
+    <link rel="stylesheet" href=""> <!-- Link to your CSS file -->
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
+            margin: 0;
+            padding: 0;
+        }
+
+        .container {
+            max-width: 400px;
+            margin: 50px auto;
+            padding: 20px;
+            background: white;
+            border-radius: 5px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+
+        h2 {
+            text-align: center;
+        }
+
+        .form-control {
+            width: 95%;
+            padding: 10px;
+            margin: 5px 0;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+        }
+
+        .btn {
+            width: 100%;
+            padding: 10px;
+            background: #007bff;
+            border: none;
+            color: white;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+
+        .btn:hover {
+            background: #0056b3;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h2>User Registration</h2>
+        <form method="POST" action="" enctype="multipart/form-data">
+            {% csrf_token %}
+            <input type="text" name="First_Name" class="form-control" placeholder="First Name" required>
+            <input type="text" name="Last_Name" class="form-control" placeholder="Last Name" required>
+            <input type="text" name="Location" class="form-control" placeholder="Location" required>
+            <input type="number" name="Phone_Number" class="form-control" placeholder="Phone Number" required>
+            <input type="email" name="Email" class="form-control" placeholder="Email" required>
+            <input type="text" name="username" class="form-control" placeholder="User Name" required>
+            <input type="password" name="password" class="form-control" placeholder="Password" required>
+            
+            <button type="submit" class="btn">Register</button>
+        </form>
+    </div>
+</body>
+</html>

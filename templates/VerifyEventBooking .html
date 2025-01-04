@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cameraman Booking View</title>
+    <link rel="stylesheet" href=""> <!-- Link to your CSS -->
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f4f4f4;
+        }
+        .container {
+            width: 80%;
+            margin: 0 auto;
+            background: white;
+            padding: 20px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+        h2 {
+            text-align: center;
+            color: #333;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+        }
+        th, td {
+            padding: 10px;
+            border: 1px solid #ccc;
+            text-align: left;
+        }
+        th {
+            background-color: #f2f2f2;
+        }
+        tr:hover {
+            background-color: #f1f1f1;
+        }
+        .reject{
+            background-color: red;
+            border-radius: 10px;
+            padding: 8px;
+            text-decoration: none;
+        }
+        .accept
+        {
+            background-color:green;
+            border-radius: 10px;
+            padding: 8px;
+            text-decoration: none;
+        }
+        
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <h2>Event Booking Details</h2>
+    <table>
+        <thead>
+            <tr>
+                <th>Username</th>
+                <!-- <th>Cameraman</th> -->
+                <th>Booking Date</th>
+                <th>Event Details</th>
+                <th>Contact Information</th>
+                <th colspan="2"></th>
+                
+            </tr>
+        </thead>
+        <tbody>
+            {% for i in val %}
+            <tr>
+                <td>{{ i.USERLID.username }}</td>
+                <!-- <td>{{ booking.cameraman_name }}</td> -->
+                <td>{{ i.Date }}</td>
+                <td>{{ i.Event }}</td>
+                <td>{{ i.Phone_Number }}</td>
+                <td><a href="Accept_EventteamBooking/{{i.id}}" class="accept">Confirm </a></td>
+                <td><a href="Cancel_EventBooking/{{i.id}}" class="reject">Cancel</a></td>
+            </tr>
+            {% empty %}
+            <tr>
+                <td colspan="5" style="text-align: center;">No bookings available.</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+
+</body>
+</html>

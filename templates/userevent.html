@@ -1,0 +1,169 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        /* Container to align cards horizontally */
+        .card-container {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 20px; /* Adds spacing between cards */
+            justify-content: center; /* Centers the cards horizontally */
+        }
+
+        /* From Uiverse.io by bhaveshxrawat */ 
+        .card {
+            width: 390px;
+            height: 254px;
+            background: #07182E;
+            position: relative;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            overflow: hidden;
+            border-radius: 20px;
+            color: white;
+            text-align: center;
+            padding: 20px;
+        }
+
+        .card h2 {
+            z-index: 1;
+            font-size: 2em;
+            margin-bottom: 10px;
+        }
+
+        .card p {
+            z-index: 1;
+            margin: 5px 0;
+        }
+
+        .card a {
+            z-index: 1;
+            color: #00B7FF;
+            text-decoration: none;
+            font-weight: bold;
+            margin-top: 10px;
+        }
+
+        .card::before {
+            content: '';
+            position: absolute;
+            width: 100px;
+            background-image: linear-gradient(180deg, rgb(0, 183, 255), rgb(255, 48, 255));
+            height: 130%;
+            animation: rotBGimg 3s linear infinite;
+            transition: all 0.2s linear;
+        }
+
+        @keyframes rotBGimg {
+            from {
+                transform: rotate(0deg);
+            }
+            to {
+                transform: rotate(360deg);
+            }
+        }
+
+        .card::after {
+            content: '';
+            position: absolute;
+            background: #07182E;
+            inset: 5px;
+            border-radius: 15px;
+        }
+
+        .modal {
+            display: none; /* Hidden by default */
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.5);
+            align-items: center;
+            justify-content: center;
+            z-index: 1000; /* Ensure modal is on top */
+        }
+
+        .modal-content {
+            background-color: #fff;
+            padding: 20px;
+            border-radius: 10px;
+            width: 400px;
+            max-width: 90%;
+            box-sizing: border-box;
+            text-align: left;
+        }
+
+        .modal-header {
+            font-size: 1.5em;
+            margin-bottom: 10px;
+        }
+
+        .close-btn {
+            float: right;
+            font-size: 1.5em;
+            cursor: pointer;
+            color: #000;
+        }
+
+        .modal textarea {
+            width: 100%;
+            padding: 10px;
+            margin: 10px 0;
+            border-radius: 5px;
+            resize: vertical;
+            box-sizing: border-box;
+        }
+
+        .submit-btn {
+            background-color: #00B7FF;
+            color: white;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+    </style>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css">
+</head>
+<body>
+    <div class="card-container">
+        
+        {% for item in events %}   
+        <div class="card">
+            
+    <i class="fa-regular fa-images fa-2xl" style="color: #74C0FC;"></i>
+  
+            <h2>{{ item.event.EventName }}</h2>
+            <p>{{ item.event.Place }}</p>
+            <p>{{ item.event.Phone }}</p>
+            <!-- {% if item.ratings %}
+            <p>
+                {% for rating in item.ratings %}
+                    {% for star in "★★★★★" %}
+                        {% if forloop.counter <= rating %}
+                            {{ star }}  <!-- Filled star -->
+                        <!-- {% else %} -->
+                            <!-- ☆  Empty star -->
+                        <!-- {% endif %}
+                    {% endfor %}
+                {% endfor %}
+            </p>
+        {% else %}
+            <p>No ratings available</p> -->
+        <!-- {% endif %}  -->
+            <a href="EventDetails/{{item.event.LOGINID}}">KNOW MORE</a>
+            <a href="Eventgallery/{{item.event.LOGINID}}">GALLERY</a>
+            <a href="EventBookingView/{{item.event.LOGINID}}">Book Now</a>
+           
+        </div>
+        {% endfor %}
+    </div>
+
+</body>
+</html>

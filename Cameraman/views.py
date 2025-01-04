@@ -37,7 +37,7 @@ class CameraManreg(View):
                 reg_form.LOGINID = login_instance
                 reg_form.save()
 
-                return HttpResponse('''<script>alert("Registered successfully!");window.location="{% url 'CameraManreg' %}"</script>''')
+                return HttpResponse('''<script>alert("Registered successfully!");window.location="/cam/CameraManreg/"</script>''')
             
             except IntegrityError as e:
                 # Print the exact error for debugging
@@ -67,11 +67,11 @@ class Addskils(View):
                 photography_skill.LOGINID = login_object  # Assign the login object
                 photography_skill.save()  # Now save it to the DB
 
-                return HttpResponse('''<script>alert("Successfully Added!");window.location="/Addskils"</script>''')
+                return HttpResponse('''<script>alert("Successfully Added!");window.location="/cam/Addskils"</script>''')
             except LoginTable.DoesNotExist:
-                return HttpResponse('''<script>alert("Failed to find user. Please log in again.");window.location="/Addskils"</script>''')
+                return HttpResponse('''<script>alert("Failed to find user. Please log in again.");window.location="/cam/Addskils"</script>''')
 
-        return HttpResponse('''<script>alert("Failed to add skill. Please try again.");window.location="/Addskils"</script>''')
+        return HttpResponse('''<script>alert("Failed to add skill. Please try again.");window.location="/cam/Addskils"</script>''')
     
 class uploadImages(View):
  def get(self,request):

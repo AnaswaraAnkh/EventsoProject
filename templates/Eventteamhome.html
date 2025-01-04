@@ -1,0 +1,188 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Catering Services</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@1,500&family=Roboto:wght@400&display=swap" rel="stylesheet">
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: 'Roboto', sans-serif;
+    }
+
+    .navbar {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 20px 50px;
+      background-color: white;
+    }
+
+    .logo {
+      font-size: 24px;
+      font-weight: bold;
+      color: #333;
+    }
+
+    .navbar ul {
+      list-style: none;
+      display: flex;
+      position: relative;
+    }
+
+    .navbar ul li {
+      margin-left: 20px;
+      position: relative;
+    }
+
+    .navbar ul li a {
+      text-decoration: none;
+      color: #333;
+      font-size: 16px;
+    }
+
+    .navbar .contact-number {
+      background-color: #ff7e6b;
+      color: white;
+      padding: 10px 20px;
+      border-radius: 5px;
+      font-weight: bold;
+    }
+
+    .hero {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      height: 80vh;
+      background: linear-gradient(135deg, #ffe082 50%, white 50%);
+      position: relative;
+    }
+
+    .hero-content {
+      text-align: left;
+      max-width: 600px;
+    }
+
+    .hero h1 {
+      font-family: 'Playfair Display', serif;
+      font-size: 42px;
+      font-weight: 500;
+      color: #333;
+      margin-bottom: 20px;
+    }
+
+    .hero p {
+      font-size: 16px;
+      color: #666;
+      margin-bottom: 30px;
+    }
+
+    .buttons {
+      display: flex;
+      gap: 15px;
+    }
+
+    .btn-primary {
+      padding: 12px 30px;
+      background-color: #ff7e6b;
+      color: white;
+      border: none;
+      border-radius: 5px;
+      font-size: 16px;
+      text-decoration: none;
+    }
+
+    .btn-secondary {
+      padding: 12px 30px;
+      background-color: #e0e0e0;
+      color: #333;
+      border: none;
+      border-radius: 5px;
+      font-size: 16px;
+      text-decoration: none;
+    }
+
+    /* Dropdown styles */
+    .dropdown {
+      position: relative;
+      display: inline-block;
+    }
+
+    .dropdown-content {
+      display: none;
+      position: absolute;
+      top: 100%;
+      left: 0;
+      background-color: white;
+      box-shadow: 0px 8px 16px rgba(0, 0, 0, 0.2);
+      border-radius: 5px;
+      z-index: 1;
+      min-width: 150px;
+    }
+
+    .dropdown-content a {
+      padding: 10px 20px;
+      display: block;
+      text-decoration: none;
+      color: #333;
+    }
+
+    .dropdown-content a:hover {
+      background-color: #ff7e6b;
+      color: white;
+    }
+
+    /* Show the dropdown on hover */
+    .dropdown:hover .dropdown-content {
+      display: block;
+    }
+  </style>
+</head>
+<body>
+
+  <header class="navbar">
+    <div class="logo">EVENTSO</div>
+    <nav>
+      <ul>
+        <li><a href="#home">Home</a></li>
+        <li><a href="AddEventgallery">Gallery</a></li>
+        <li><a href="Catering_Reg">Catering</a></li>
+        <li class="dropdown">
+          <a href="javascript:void(0)">Menu</a>
+          <div class="dropdown-content">
+            <a href="Adddecors">Decor</a>
+            <a href="AddfoodMenu">Food Menu</a>
+          </div>
+        </li>
+        <li><a href="View_EventPayment">Payment</a></li>
+        <li><a href="EventteamBooking">User Request</a></li>
+        <li><a href="ViewEventRating_Review">Review & Rating</a></li>
+        <li><a href="View_Eventcomplaint">Complaint</a></li>
+        {% if user.is_authenticated %}
+        <li><a href="{% url 'logout' %}">Logout</a></li>
+        {% endif %}
+
+        
+        <!-- Dropdown Menu -->
+        
+      </ul>
+    </nav>
+    <div class="contact-number">+1 123 456 78 90</div>
+  </header>
+
+  <section class="hero">
+    <div class="hero-content">
+      <h1> City’s Finest Caterer for Events & Parties</h1>
+    </div>
+  </section>
+
+</body>
+</html>

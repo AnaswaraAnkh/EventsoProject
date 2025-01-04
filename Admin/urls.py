@@ -17,7 +17,7 @@ Including another URLconf
 from django.contrib import admin
 from django.urls import path
 
-from Admin.views import  Accept_CameraMan, Accept_MakeupArtist, AddEventTeam, Adminhome, Cameramanhome, EventTeamDlt, EventTeamEdit, Login, Reject_CameraMan, Reject_MakeupArtist, Reply, Verify_Cameraman, Verify_MakeupArtist, ViewEventTeam, Viewcomplaint
+from Admin.views import  Accept_CameraMan, Accept_MakeupArtist, AddEventTeam, Adminhome, Cameramanhome, EventTeamEdit, Login, Reject_CameraMan, Reject_MakeupArtist, Reply, Verify_Cameraman, Verify_MakeupArtist, ViewEventTeam, Viewcomplaint
 
 urlpatterns = [
    path("",Login.as_view(),name="Login"),
@@ -26,7 +26,7 @@ urlpatterns = [
    path('Cameramanhome',Cameramanhome.as_view(),name='Cameramanhome'),
    path('AddEventTeam',AddEventTeam.as_view(),name='AddEventTeam'),
    path('EventTeamEdit/<int:T_id>/',EventTeamEdit.as_view(),name='EventTeamEdit'),
-   path('EventTeamDlt/<int:T_id>/',EventTeamDlt.as_view(),name='EventTeamDlt'),
+#    path('EventTeamDlt/<int:T_id>/',EventTeamDlt.as_view(),name='EventTeamDlt'),
    path('Verify_Cameraman',Verify_Cameraman.as_view(),name='Verify_Cameraman'),
    path('Accept_CameraMan/<int:C_id>/',Accept_CameraMan.as_view(),name='Accept_CameraMan'),
    path('Reject_CameraMan/<int:C_id>/',Reject_CameraMan.as_view(),name='Reject_CameraMan'),

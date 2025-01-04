@@ -1,0 +1,182 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Rating and Review</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <style>
+        /* General styling */
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f9;
+            margin: 0;
+            padding: 0;
+        }
+
+        .container {
+            width: 50%;
+            margin: 50px auto;
+            background-color: white;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+
+        h2 {
+            text-align: center;
+            color: #333;
+        }
+
+        label {
+            font-size: 1.2rem;
+            margin-bottom: 5px;
+            color: #333;
+        }
+
+        select, input[type="text"], textarea, input[type="date"] {
+            width: 100%;
+            padding: 10px;
+            margin: 10px 0 20px;
+            border-radius: 5px;
+            border: 1px solid #ccc;
+            font-size: 1rem;
+        }
+
+        .rating {
+            display: flex;
+            justify-content: start;
+            margin: 10px 0;
+        }
+
+        .rating i {
+            color: gold;
+            font-size: 1.5rem;
+            cursor: pointer;
+            margin-right: 5px;
+        }
+
+        button {
+            background-color: #4CAF50;
+            color: white;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 5px;
+            font-size: 1rem;
+            cursor: pointer;
+            width: 100%;
+        }
+
+        button:hover {
+            background-color: #45a049;
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        .form-group.rating-group {
+            display: flex;
+            align-items: center;
+        }
+
+        .form-group.rating-group .rating {
+            margin-left: 10px;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <h2>Submit a Rating and Review</h2>
+
+        <form id="reviewForm" action="" method="post" enctype="multipart/form-data">
+            {% csrf_token %}
+            <!-- Service Type Dropdown -->
+            <div class="form-group">
+                <label for="serviceProvider">Select Service Provider</label>
+                <select id="serviceProvider" onchange="populateProviders()">
+                    <option value="">Select Service Type</option>
+                    <option value="cameraman">Cameraman</option>
+                    <option value="eventTeam">Event Team</option>
+                    <option value="makeupArtist">Makeup Artist</option>
+                </select>
+            </div>
+
+            <!-- Provider Names Dropdown -->
+            <div class="form-group">
+                <label for="providerNames">Select Provider Name</label>
+                <select id="providerNames" name="serviceProviderName" required>
+                    <option value="">Select Provider Name</option>
+                </select>
+            </div>
+
+            <!-- Username Field -->
+            <div class="form-group">
+                <label for="username">Username</label>
+                <input type="text" id="username" placeholder="Enter your username" required>
+            </div>
+
+            <!-- Rating Section -->
+            <div class="form-group rating-group">
+                <label>Rating</label>
+                <div class="rating">
+                    <i class="far fa-star" onclick="rate(1)"></i>
+                    <i class="far fa-star" onclick="rate(2)"></i>
+                    <i class="far fa-star" onclick="rate(3)"></i>
+                    <i class="far fa-star" onclick="rate(4)"></i>
+                    <i class="far fa-star" onclick="rate(5)"></i>
+                </div>
+                <input type="hidden" id="ratingValue" name="Rating" required>
+            </div>
+
+            <!-- Review Field -->
+            <div class="form-group">
+                <label for="review">Review</label>
+                <textarea name="Review" id="review" rows="4" placeholder="Enter your review" required></textarea>
+            </div>
+
+            <!-- Date Field -->
+            <div class="form-group">
+                <label for="date">Date</label>
+                <input type="date" id="date" name="Date">
+            </div>
+
+            <!-- Submit Button -->
+            <button type="submit">Submit Review</button>
+        </form>
+    </div>
+
+    <script>
+        // Data for service providers
+        const serviceProviders = {{ service_providers|safe }};
+
+        function populateProviders() {
+            const serviceType = document.getElementById('serviceProvider').value;
+            const providerNamesDropdown = document.getElementById('providerNames');
+            providerNamesDropdown.innerHTML = '<option value="">Select Provider Name</option>';
+
+            if (serviceType) {
+                const providers = serviceProviders[serviceType];
+                providers.forEach(provider => {
+                    const option = document.createElement('option');
+                    option.value = provider.LOGINID;
+                    option.textContent = provider.EventName || provider.MakeupArtist || provider.StudioName; 
+                    providerNamesDropdown.appendChild(option);
+                });
+            }
+        }
+
+        // Rating functionality
+        function rate(stars) {
+            document.getElementById('ratingValue').value = stars;
+            const starElements = document.querySelectorAll('.rating i');
+            starElements.forEach((star, index) => {
+                star.classList.toggle('fas', index < stars);
+                star.classList.toggle('far', index >= stars);
+            });
+        }
+    </script>
+
+</body>
+</html>
