@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Photography Skills</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Poppins', sans-serif;
+            background-color: #f7f9fc;
+        }
+        .card {
+            border: none;
+            border-radius: 10px;
+            transition: all 0.3s ease;
+            margin-bottom: 20px;
+        }
+        .card:hover {
+            box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+            transform: translateY(-5px);
+        }
+        .card-header {
+            background-color: #f1f1f1;
+            border-radius: 10px 10px 0 0;
+            padding: 10px;
+        }
+        .card-body {
+            padding: 20px;
+            background-color: #fff;
+            border-radius: 0 0 10px 10px;
+        }
+        .card-title {
+            font-size: 1.4rem;
+            font-weight: 600;
+            color: #007bff;
+        }
+        .card-text {
+            color: #555;
+            font-size: 1rem;
+        }
+        .card-footer {
+            font-size: 1.1rem;
+            font-weight: 600;
+            color: #28a745;
+        }
+        .status-badge {
+            padding: 5px 15px;
+            border-radius: 15px;
+            color: #fff;
+            font-size: 0.9rem;
+        }
+        .active-status {
+            background-color: #28a745;
+        }
+        .inactive-status {
+            background-color: #dc3545;
+        }
+        .btn-info {
+            color: #fff;
+            background-color: #007bff;
+            border: none;
+        }
+        .btn-info:hover {
+            background-color: #0056b3;
+        }
+        .modal-content {
+            background-color: #f9f9f9;
+        }
+    </style>
+</head>
+<body>
+    <div class="container my-5">
+        <h1 class="text-center mb-4">Photography Skills</h1>
+        
+        <!-- Single skill card display -->
+        <div class="row">
+            <div class="col-lg-4 col-md-6 col-sm-12">
+                <div class="card">
+                    <div class="card-header d-flex justify-content-between align-items-center">
+                        <span class="status-badge {% if skill.is_active %}active-status{% else %}inactive-status{% endif %}">
+                            {% if skill.is_active %}Active{% else %}Inactive{% endif %}
+                        </span>
+                    </div>
+                    <div class="card-body">
+                        <h5 class="card-title">{{ skill.skill_title }}</h5>
+                        <p class="card-text">{{ skill.description|slice:":100" }}...</p>
+                        <p><strong>Package:</strong> {{ skill.package|capfirst }}</p>
+                    </div>
+                    <div class="card-footer">
+                        {% if skill.price %}
+                        <span>Price: ${{ skill.price }}</span>
+                        {% else %}
+                        <span>Price: Contact for details</span>
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+    <!-- Bootstrap JS and dependencies -->
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.4/dist/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+</body>
+</html>

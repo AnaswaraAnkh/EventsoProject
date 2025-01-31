@@ -1,17 +1,17 @@
-from urllib import request
+
 from django.db import IntegrityError
 from django.http import HttpResponse, JsonResponse
 from django.shortcuts import render
 from django.views import View
 import random
-from .models import LoginTable,Payment, User_Table
+from .models import Account, LoginTable, User_Table
 
 from Admin.models import LoginTable
-from Cameraman.models import CameraManProfile, GalleryImage, PhotographySkill
-from MakeupArtist.models import MakeupArtistProfile
+from Cameraman.models import CameraBooking, CameraManProfile, GalleryImage, PhotographySkill
+from MakeupArtist.models import MakeupArtistProfile, Makeupbooking
 from User_Profile.models import Complaint, Rating_Review_Table
 from TeamEvent.models import CateringService, Decor, EventTeamProfile, Eventbooking, FoodMenu
-from User_Profile.form import ComplaintForm, EventbookingForm, MakeupBookingForm, PaymentForm, RatingForm, UserRegistrationForm
+from User_Profile.form import CameraBookingForm, ComplaintForm, EventbookingForm, MakeupBookingForm, PaymentForm, RatingForm, UserRegistrationForm
 from django.shortcuts import render
 
 # Create your views here.
@@ -37,7 +37,7 @@ class Userselect(View):
             # Check if username already exists
             if LoginTable.objects.filter(username=request.POST['username']).exists():
                 return HttpResponse(
-                    '''<script>alert("Username already exists! Please choose a different one.");window.location="/shop/shop/";</script>'''
+                    '''<script>alert("Username already exists! Please choose a different one.");window.location="/";</script>'''
                 )
             
             # Create a new user in LoginTable with password hashing
@@ -57,12 +57,12 @@ class Userselect(View):
             print("Payment data:", payment_data)  # Debugging: Check generated data
 
             # Save to Payment model
-            payment_entry = Payment.objects.create(
+            payment_entry = Account.objects.create(
                 account_number=payment_data['account_number'],
                 key=payment_data['key'],
                 IFSC=payment_data['IFSC'],
                 amount=payment_data['amount'],
-                status='Pending',
+                
                 USERLID=login_instance  # Verify ForeignKey field name
             )
 
@@ -177,10 +177,7 @@ class EventDetails(View):
             }
         )
     
-class Eventgallery(View):
-        def get(self,request,E_id):
-            obj=GalleryImage.objects.filter(LOGINID=E_id)
-            return render(request,"evegallery.html",{'val':obj})
+
         
 
 class UserMakeup(View):
@@ -213,14 +210,15 @@ class UserMakeup(View):
         # Pass the data to the template
         return render(request, "Usermakeup.html", {'artists': makeup_profiles_with_ratings})
 
-class MakeupGallery(View):
+class ViewMakeupGallery(View):
     def get(self,request,M_id):
          obj=GalleryImage.objects.filter(LOGINID=M_id)
-         return render(request,"MakeupGallery.html",{'val':obj})
+         return render(request,"Viewmakeupgallery.html",{'val':obj})
     
 class Camerauser(View):
     def get(self, request):
         obj = CameraManProfile.objects.all()
+        print("hhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhh")
         data = []
         for photographer in obj:
             skills = PhotographySkill.objects.filter(LOGINID=photographer.LOGINID)
@@ -231,7 +229,8 @@ class Camerauser(View):
 class Camgalley(View):
     def get(self,request,C_id):
          obj=GalleryImage.objects.filter(LOGINID=C_id)
-         return render(request,"MakeupGallery.html",{'val':obj})
+         print(obj)
+         return render(request,"Viewcameragallery.html",{'val':obj})
         
 class EventBookingView(View):
     def get(self, request, B_id):
@@ -296,8 +295,8 @@ class Makeupuserbooking(View):
 
 class Camerabooking(View):
     def get(self, request, C_id):
-        
-        return render(request, "Makeupbooking.html")
+        form = MakeupBookingForm()
+        return render(request, "Makeupbooking.html",{'form':form})
     
     def post(self, request, C_id):
         user_id = request.session.get("user_id")
@@ -305,7 +304,7 @@ class Camerabooking(View):
         if not user_id:
             return HttpResponse("User not logged in", status=401)
         
-        form = MakeupBookingForm(request.POST)
+        form = CameraBookingForm(request.POST)
         
         if form.is_valid():
             try:
@@ -425,100 +424,126 @@ class RatingandReview(View):
             complaint.SERVICEPROVIDERLID = service_provider
             complaint.save()  # date_submitted will be set here automatically
 
-            return HttpResponse('''<script>alert("Complaint Submitted");window.location="/user/User_Home"</script>''')
+            return HttpResponse('''<script>alert("Added");window.location="/user/User_Home"</script>''')
         
         return HttpResponse('''<script>alert("Failed to submit complaint");window.location="/user/User_Home"</script>''')
     
-class MakePayment(View):
-    def get(self,request,M_id):
-        
-        event_teams = EventTeamProfile.objects.filter(is_active=True).values('LOGINID', 'EventName')
-        makeup_artists = MakeupArtistProfile.objects.filter(is_active=True).values('LOGINID', 'MakeupArtist')
-        camera_teams = CameraManProfile.objects.filter(is_active=True).values('LOGINID', 'StudioName')
-        obj = Payment.objects.filter(USERLID=M_id).first()
-        print(obj)
-
-        context = {
-            'service_providers': {
-                'eventTeam': list(event_teams),
-                'makeupArtist': list(makeup_artists),
-                'cameraman': list(camera_teams),
-            },
-            'payment_obj': obj  
-        }
-        return render(request, "payment.html", context)
-    
-    def post(self, request,M_id):
-        print("asdfghjkl")
-       
-        accountdetails = Payment.objects.filter(USERLID=M_id).first()
-        print(accountdetails)
-        
-        if accountdetails:
-            key1 = accountdetails.key
-            print(key1)
-            amount = request.POST.get('amount')
-            print(amount)
-            account_balance = accountdetails.amount
-            print(account_balance)
-            service_provider_id = request.POST.get("serviceProviderName")
-            print(service_provider_id)
-            
-            if not service_provider_id:
-                return HttpResponse('''<script>alert("Service Provider not selected");window.location="/user/MakePayment"</script>''')
-                
-            
-            # Convert service_provider_id to an integer and get the service provider
-            try:
-                service_provider = LoginTable.objects.get(id=int(service_provider_id))
-            except (LoginTable.DoesNotExist, ValueError):
-                return HttpResponse('''<script>alert("Service Provider not found");window.location="/user/MakePayment"</script>''')
-                
-
-            if request.method == 'POST':
-                key = request.POST.get('key')
-                print(key)
-
-                if key == key1:
-                    form = PaymentForm(request.POST, instance=accountdetails)
-                    amount = request.POST.get('amount')
-
-                    if float(account_balance) >= float(amount):
-                        if form.is_valid():
-                            # Update balance
-                            new_balance = float(account_balance) - float(amount)  # Convert amount to float
-                            accountdetails.amount = new_balance
-                            
-                            # Update service provider and status
-                            accountdetails.SERVICEPROVIDERLID = service_provider  # Add service provider to the payment
-                            accountdetails.status = 'paid'  # Update the payment status to 'paid'
-                            
-                            form.save()  # Save the updated payment record
-                            return HttpResponse('''<script>alert("Amount Debited and Payment Recorded");window.location="/"</script>''')
-
-                        
-
-                        else:
-                            print(form.errors)
-                            return HttpResponse('''<script>alert("Form is invalid");window.location="/"</script>''')
-
-                            
-                    else:
-                        return HttpResponse('''<script>alert("Insufficient balance");window.location="/"</script>''')
-
-                        
-                else:
-                    return HttpResponse('''<script>alert("Incorrect Key");window.location="/"</script>''')
-        else:
-            return HttpResponse("Account details not found")
-
-        # Default render if not POST request
-        return render(request, 'payment.html')
-    
 class Viewuserbookingstatus(View):
-    def get(self,request):
-        obj=Eventbooking.objects.all()
-        return render(request,"booking status.html",{'val':obj})
-    
+    def get(self, request):
+        user_id = request.session.get("user_id")
+        
+        event_bookings = Eventbooking.objects.filter(USERLID=user_id)
+        for booking in event_bookings:
+            evelid = booking.EVELID
+            payment = Payment.objects.filter(SERVICE_ID=evelid).first()
+            if payment:
+                booking.payment_status = payment.Status
+            else:
+                booking.payment_status = "Not Paid"  # Explicitly set to "Not Paid" if no payment found
 
+        makeup_bookings = Makeupbooking.objects.filter(USERLID=user_id)
+        for booking in makeup_bookings:
+            maklid = booking.MAKEUPLID
+            payment = Payment.objects.filter(SERVICE_ID=maklid).first()
+            if payment:
+                booking.payment_status = payment.Status
+            else:
+                booking.payment_status = "Not Paid"
+
+        cameraman_bookings = CameraBooking.objects.filter(USERLID=user_id)
+        for booking in cameraman_bookings:
+            camlid = booking.CAMERAMANLID
+            payment = Payment.objects.filter(SERVICE_ID=camlid).first()
+            if payment:
+                booking.payment_status = payment.Status
+            else:
+                booking.payment_status = "Not Paid"
+
+        return render(request, "booking status.html", {
+            'event_bookings': event_bookings,
+            'makeup_bookings': makeup_bookings,
+            'cameraman_bookings': cameraman_bookings
+        })
+
+
+
+
+
+from decimal import Decimal
+from django.shortcuts import render, redirect
+from django.http import HttpResponse
+from .models import LoginTable, Account, Payment
+
+from django.contrib import messages
+
+class Payments(View):
+    def get(self, request, S_id):
+        obj = LoginTable.objects.filter(id=S_id)
+        user_id = request.session.get("user_id")
+        obj1 = Account.objects.get(USERLID=user_id)
+        return render(request, "payment.html", {'val': obj, 'val1': obj1})
+
+    def post(self, request, S_id):
+        form = PaymentForm(request.POST)
+        user_id = request.session.get("user_id")
+        account = Account.objects.get(USERLID=user_id)  # Get user account
+
+        # Retrieve the entered PIN and amount
+        entered_key = request.POST.get('key')
+        amount = float(request.POST.get('amount'))
+
+        # Check if entered PIN matches
+        if entered_key != account.key:
+            return HttpResponse('''<script>alert("Incorrect PIN!");window.location='/user/Viewuserbookingstatus'</script>''')
+
+        # Check if sufficient balance is available
+        if account.amount < Decimal(amount):  # Ensure amount is treated as Decimal
+            return HttpResponse('''<script>alert("Insufficient balance!");window.location='/user/Viewuserbookingstatus'</script>''')
+
+        # Deduct the amount from the account balance
+        account.amount -= Decimal(amount)
+        account.save()
+
+        # Create the payment record
+        payment = Payment(
+            SERVICE_ID=LoginTable.objects.get(id=S_id),
+            ACCOUNT_ID=account,
+            Amount=Decimal(amount),
+            Status="Paid"
+        )
+        payment.save()
+
+        return HttpResponse('''<script>alert("Payment Successful!");window.location='/user/Viewuserbookingstatus'</script>''')
+
+
+
+
+
+
+class Viewmakeuprating(View):
+    def get(self,request,mak_id):
+        obj=Rating_Review_Table.objects.filter(SERVICEPROVIDERLID=mak_id)
+        print(obj)
+        return render(request,"Viewmakeuprating.html",{'val':obj})
+    
+class Vieweventrating(View):
+    def get(self,request,mak_id):
+        obj=Rating_Review_Table.objects.filter(SERVICEPROVIDERLID=mak_id)
+        print(obj)
+        return render(request,"Vieweventrating.html",{'val':obj})
+    
+class Viewcamerarating(View):
+    def get(self,request,mak_id):
+        obj=Rating_Review_Table.objects.filter(SERVICEPROVIDERLID=mak_id)
+        print(obj)
+        return render(request,"Vieweventrating.html",{'val':obj})
+    
+class ViewCameraskills(View):
+    def get(self, request, user_id):
+        obj = PhotographySkill.objects.filter(LOGINID=user_id).first()  # Get the first object (or None if no object found)
+        
+        if obj:
+            return render(request, "viewcameraskill.html", {'skill': obj})
+        else:
+            return render(request, "viewcameraskill.html", {'skill': None})
 

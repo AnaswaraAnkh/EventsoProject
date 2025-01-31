@@ -125,31 +125,20 @@
 
             <div class="form-group">
                 <label for="serviceProvider">Select Service Provider</label>
-                <select id="serviceProvider" onchange="populateProviders()">
-                    <option value="">Select Service Type</option>
-                    <option value="cameraman">Cameraman</option>
-                    <option value="eventTeam">Event Team</option>
-                    <option value="makeupArtist">Makeup Artist</option>
-                </select>
+                <input type="text"  value="{{ val.0.username }}">
             </div>
 
-            <!-- Provider Names Dropdown -->
-            <div class="form-group">
-                <label for="providerNames">Select Provider Name</label>
-                <select id="providerNames" name="serviceProviderName" required>
-                    <option value="">Select Provider Name</option>
-                </select>
-            </div>
+           
 
             <div class="form-group">
                 <label for="accountNumber">Account Number</label>
-                <input type="number" id="accountNumber" name="account_number" placeholder="Enter Account Number" value="{{ payment_obj.account_number }}" required>
+                <input type="number" id="accountNumber" name="account_number" placeholder="Enter Account Number" value="{{ val1.account_number }}" required>
             </div>
 
             <!-- IFSC Code Field -->
             <div class="form-group">
                 <label for="ifsc">IFSC Code</label>
-                <input type="text" id="ifsc" name="ifsc" placeholder="Enter IFSC Code" value="{{ payment_obj.IFSC }}" required>
+                <input type="text" id="ifsc" name="ifsc" placeholder="Enter IFSC Code" value="{{ val1.IFSC }}" required>
             </div>
 
             <!-- Amount Field -->
@@ -159,7 +148,7 @@
             </div>
 
             <!-- Payment Method Dropdown -->
-            <div class="form-group">
+            <!-- <div class="form-group">
                 <label for="paymentMethod">Select Payment Method</label>
                 <select id="paymentMethod" name="payment_method" required>
                     <option value="">Select Payment Method</option>
@@ -167,7 +156,7 @@
                     <option value="debitCard">Debit Card</option>
                     <option value="upi">UPI</option>
                 </select>
-            </div>
+            </div> -->
 
             <div class="form-group">
                 <label for="password_field">Enter Your PIN</label>
@@ -179,25 +168,4 @@
         </form>
     </div>
 
-    <script>
-        // Data for service providers
-        const serviceProviders = {{ service_providers|safe }};
-
-        function populateProviders() {
-            const serviceType = document.getElementById('serviceProvider').value;
-            const providerNamesDropdown = document.getElementById('providerNames');
-            providerNamesDropdown.innerHTML = '<option value="">Select Provider Name</option>';
-
-            if (serviceType) {
-                const providers = serviceProviders[serviceType];
-                providers.forEach(provider => {
-                    const option = document.createElement('option');
-                    option.value = provider.LOGINID;
-                    option.textContent = provider.EventName || provider.MakeupArtist || provider.StudioName; 
-                    providerNamesDropdown.appendChild(option);
-                });
-            }
-        }
-    </script>
-</body>
-</html>
+    

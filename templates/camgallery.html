@@ -3,68 +3,31 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Image Gallery</title>
-    <style>
-        *{
-            margin: 0;
-            padding: 0;
-        }
-        body {
-            font-family: Arial, sans-serif;
-            margin: 0;
-            padding: 0;
-            background-color: #f4f4f4;
-        }
-        .gallery-container {
-            display: flex;
-            flex-wrap: wrap;
-            justify-content: center;
-            padding: 20px;
-        }
-        .gallery-item {
-            margin: 10px;
-            border: 2px solid #ddd;
-            border-radius: 5px;
-            overflow: hidden;
-            background-color: #fff;
-            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
-            transition: transform 0.2s;
-            width: 300px; /* Fixed width for gallery items */
-        }
-        .gallery-item:hover {
-            transform: scale(1.05); /* Scale effect on hover */
-        }
-        .gallery-item img {
-            width: 100%;
-            height: auto;
-        }
-        .description {
-            padding: 15px;
-            text-align: center;
-            color: #333;
-        }
-        .logo{
-            height: 70px;
-            background-color: blueviolet;
-            padding-top: 12px;
-
-        }
-       
-    </style>
+    <title>Upload Image</title>
 </head>
 <body>
-<div class="logo">
-    <h2>GALLERY</h2>
-</div>
-<div class="gallery-container">
-    {%for i in val%}
-    <div class="gallery-item">
-        <img src="{{i.image.url}}" alt="Image 1">
-        <div class="description">Description of Image 1</div>
-    </div>
-    {%endfor%}
-    
-</div>
+    <h1>Upload an Image</h1>
 
+    <!-- Display any error messages -->
+    {% if error %}
+        <div style="color: red;">{{ error }}</div>
+    {% endif %}
+
+    <!-- Image Upload Form -->
+    <form method="POST" enctype="multipart/form-data">
+        {% csrf_token %}
+        <label for="image">Select an Image:</label>
+        <input type="file" id="image" name="image" accept="image/*" required>
+        <br><br>
+        <button type="submit">Upload</button>
+    </form>
+
+    <!-- Display Uploaded Images -->
+    <h2>Uploaded Images</h2>
+    <div>
+        {% for img in images %}
+            <img src="{{ img.image.url }}" alt="Uploaded Image" style="max-width: 200px; margin: 10px;">
+        {% endfor %}
+    </div>
 </body>
 </html>

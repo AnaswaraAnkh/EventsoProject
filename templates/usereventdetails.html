@@ -70,7 +70,18 @@
         tr:nth-child(even) {
             background-color: #f9f9f9;
         }
-    </style>
+        
+    .food-images {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 10px;
+    }
+    .food-images img {
+        width: 50px; /* You can adjust this size if necessary */
+        height: auto;
+    }
+</style>
+
 </head>
 <body>
 
@@ -137,13 +148,15 @@
                     {% endfor %}
                 </td>
                 <td>
-                    {% for food in catering_service.food_menu %}
-                        {% if food.image %}
-                            <img src="{{ food.image.url }}" alt="{{ food.name }}" width="100">
-                        {% else %}
-                            No image available
-                        {% endif %}
-                    {% endfor %}
+                    <div class="food-images">
+                        {% for food in catering_service.food_menu %}
+                            {% if food.image %}
+                                <img src="{{ food.image.url }}" alt="{{ food.name }}" width="100">
+                            {% else %}
+                                No image available
+                            {% endif %}
+                        {% endfor %}
+                    </div>
                 </td>
             </tr>
             {% endfor %}

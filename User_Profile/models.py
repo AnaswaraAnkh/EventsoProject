@@ -41,18 +41,29 @@ class Rating_Review_Table(models.Model):
     updated_at = models.DateTimeField(auto_now_add=True, null=True, blank=True)
 
 
-class Payment(models.Model):
+class Account(models.Model):
     account_number=models.CharField(max_length=50)
     IFSC=models.CharField(max_length=50)
     key=models.CharField(max_length=50)
     amount = models.DecimalField(max_digits=10, decimal_places=2)
     payment_method=models.CharField(max_length=50, blank=True, null=True)
-    status=models.CharField(max_length=50, blank=True, null=True)
     USERLID = models.ForeignKey(LoginTable,on_delete=models.CASCADE,blank=True,null=True,related_name='user_payment')
-    SERVICEPROVIDERLID = models.ForeignKey(LoginTable, on_delete=models.CASCADE, null=True, blank=True, related_name='serviceprovider_payment')
     is_active = models.BooleanField(default=True)
     created_at = models.DateTimeField(auto_now_add=True, null=True, blank=True)
     updated_at = models.DateTimeField(auto_now_add=True, null=True, blank=True)
+
+class Payment(models.Model):
+    SERVICE_ID=models.ForeignKey(LoginTable,on_delete=models.CASCADE,blank=True,null=True)
+    ACCOUNT_ID=models.ForeignKey(Account,on_delete=models.CASCADE,blank=True,null=True)
+    Amount=models.IntegerField(blank=True, null=True)
+    Status=models.CharField(max_length=50,null=True,blank=True)
+    is_active = models.BooleanField(default=True)
+    created_at = models.DateTimeField(auto_now_add=True, null=True, blank=True)
+    updated_at = models.DateTimeField(auto_now_add=True, null=True, blank=True)
+
+
+
+
 
 
     

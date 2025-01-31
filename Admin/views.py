@@ -146,7 +146,14 @@ class EventTeamEdit(View):
         return HttpResponse('''<script>alert("Failed");window.location="/ViewEventTeam"</script>''')
     
 
-    
+class  EventTeamDlt(View):
+    def get(Self,request,T_id):
+        obj =EventTeamProfile.objects.get(id=T_id)
+        obj.delete()
+        return HttpResponse('''<script>alert("successfully deleted");window.location="/ViewEventTeam"</script>''')
+
+
+        
     
 class Verify_Cameraman(View):
     def get(self,request):

@@ -23,7 +23,7 @@ class MakeupBookingForm(forms.ModelForm):
         model = Makeupbooking
         fields = [ 'Event', 'Phone_Number', 'Date', ]
 
-class MakeupBookingForm(forms.ModelForm):
+class CameraBookingForm(forms.ModelForm):
     class Meta:
         model = CameraBooking
         fields = [ 'Event', 'Phone_Number', 'Date', ]
@@ -42,4 +42,5 @@ class RatingForm(form.ModelForm):
 class PaymentForm(form.ModelForm):
     class Meta:
         model=Payment
-        fields=['amount','payment_method']
+        fields=['Amount','Status']
+

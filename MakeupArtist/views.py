@@ -4,7 +4,9 @@ from django.shortcuts import render
 from django.views import View
 
 from Admin.models import *
-from User_Profile.models import Complaint, Payment
+from Cameraman.models import GalleryImage
+from TeamEvent.form import EvegalleryForm
+from User_Profile.models import Complaint, Payment, Rating_Review_Table
 from MakeupArtist.models import Makeupbooking
 from MakeupArtist.form import *
 
@@ -33,7 +35,7 @@ class MakeupArtistRegistration(View):
                 reg_form.LOGINID = login_instance
                 reg_form.save()
 
-                return HttpResponse('''<script>alert("Registered successfully!");window.location="/"</script>''')
+                return HttpResponse('''<script>alert("Registered successfully!");window.location="/mak/MakeupArtistRegistration"</script>''')
             
             except IntegrityError as e:
                 # Print the exact error for debugging
@@ -72,13 +74,19 @@ class Cancel_MakeupBooking(View):
             mak.save()  # Save the changes
             return HttpResponse('''<script>alert("successfully Canceleld");window.location="/mak/MakeupBooking"</script>''') 
     
-class View_MakPayment(View):
-     def get(self,request):
-        Serviceproviderid= request.session.get("user_id")
+
+     
+
+class ViewMakPayment(View):
+    def get(self, request):
+        Serviceproviderid = request.session.get("user_id")
         print(Serviceproviderid)
-        obj=Payment.objects.filter(SERVICEPROVIDERLID=Serviceproviderid).select_related('USERLID')
+        
+        # Use select_related to join related tables efficiently
+        obj = Payment.objects.filter(SERVICE_ID=Serviceproviderid).select_related('ACCOUNT_ID', 'ACCOUNT_ID__USERLID')
         print(obj)
-        return render(request,"ViewCamPayment.html",{'val':obj})
+        
+        return render(request, "ViewMakPayment.html", {'val': obj})
      
 class View_Makcomplaint(View):
     def get(self, request):
@@ -86,7 +94,7 @@ class View_Makcomplaint(View):
         print(Serviceproviderid)
         obj = Complaint.objects.filter(SERVICEPROVIDERID=Serviceproviderid).select_related('USERLID')
         print(obj)
-        return render(request, "CamComplaint.html", {'val': obj})
+        return render(request, "MakComplaint.html", {'val': obj})
 
     def post(self, request):
         complaint_id = request.POST.get('complaintId')
@@ -105,7 +113,41 @@ class View_Makcomplaint(View):
                 return JsonResponse({'success': False, 'message': 'Complaint not found'})
         return JsonResponse({'success': False, 'message': 'Invalid data'})
     
+class MakViewRating_Review(View):
+    def get(self,request):
+     Serviceproviderid = request.session.get("user_id")
+     obj=Rating_Review_Table.objects.filter(SERVICEPROVIDERLID=Serviceproviderid).select_related('USERLID')
+     print(obj)
+     return render(request, "ViewRatingReview.html",{'val':obj})
+    
 
     
+
+class Addmakeupgallery(View):
+    def get(self, request):
+        eventteamid = request.session.get("user_id")
+        obj=GalleryImage.objects.filter(LOGINID=eventteamid)
+        return render(request, "makeupgallery.html",{'images':obj})
+    def post(self, request):
+        # Retrieve the user ID from the session
+        eventteamid = request.session.get("user_id")
+        if not eventteamid:
+            return render(request, "Evegalleryadd.html", {
+                "error": "User not logged in or session expired.",
+                "form": EvegalleryForm(),
+                "images": GalleryImage.objects.all(),
+            })
+
+        # Handle the form submission
+        form = EvegalleryForm(request.POST, request.FILES)
+        if form.is_valid():
+            gallery_image = form.save(commit=False)  # Create the instance but don't save it yet
+            gallery_image.LOGINID_id = eventteamid  # Assign the foreign key
+            gallery_image.save()  # Save the instance to the database
+            return HttpResponse('''<script>alert("Added");window.location="/mak/Addmakeupgallery"</script>''')  # Redirect to the gallery page or any other desired URL
+
+        # If the form is not valid, re-render the form with errors
+        images = GalleryImage.objects.all()
+        return render(request, "makeupgallery.html", {'images': images, 'form': form, 'error': form.errors})
 
         

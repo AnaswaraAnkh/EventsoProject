@@ -43,41 +43,45 @@ class Catering_Reg(View):
     
     
 class AddEventgallery(View):
-    def get(self, request): 
-        return render(request, "Evegalleryadd.html")
-
+    def get(self, request):
+        eventteamid = request.session.get("user_id")
+        obj=GalleryImage.objects.filter(LOGINID=eventteamid)
+        return render(request, "Evegalleryadd.html",{'images':obj})
     def post(self, request):
-        login_id = request.session.get("user_id")  # Retrieve the user ID from the session
-        if login_id is None:
-            return redirect('login')  # Redirect to login page if the user is not logged in
-        
-        try:
-            login_instance = LoginTable.objects.get(id=login_id)  # Get the user instance
-        except LoginTable.DoesNotExist:
-            return redirect('login')  # Redirect if the user is not found
-        
-        if request.method == 'POST' and request.FILES.getlist('image'):  # Check if there are files in the request
-            form = EvegalleryForm(request.POST, request.FILES)
-            
-            if form.is_valid():
-                for file in request.FILES.getlist('image'):
-                    # Save each image to the GalleryImage model
-                    GalleryImage.objects.create(image=file, user=login_instance)
-                return redirect('success')  # Redirect to a success page after successful upload
-            else:
-                return render(request, "Evegalleryadd.html", {'form': form, 'error': 'Form is not valid'})  # Render the form with errors
-        else:
-            return render(request, "Evegalleryadd.html", {'error': 'No images selected'})
+        # Retrieve the user ID from the session
+        eventteamid = request.session.get("user_id")
+        if not eventteamid:
+            return render(request, "Evegalleryadd.html", {
+                "error": "User not logged in or session expired.",
+                "form": EvegalleryForm(),
+                "images": GalleryImage.objects.all(),
+            })
+
+        # Handle the form submission
+        form = EvegalleryForm(request.POST, request.FILES)
+        if form.is_valid():
+            gallery_image = form.save(commit=False)  # Create the instance but don't save it yet
+            gallery_image.LOGINID_id = eventteamid  # Assign the foreign key
+            gallery_image.save()  # Save the instance to the database
+            return HttpResponse('''<script>alert("Added");window.location="/event/upload-image"</script>''')  # Redirect to the gallery page or any other desired URL
+
+        # If the form is not valid, re-render the form with errors
+        images = GalleryImage.objects.all()
+        return render(request, "Evegalleryadd.html", {'images': images, 'form': form, 'error': form.errors})
 
 
 
 class View_EventPayment(View):
-     def get(self,request):
-        Serviceproviderid= request.session.get("user_id")
+    def get(self, request):
+        Serviceproviderid = request.session.get("user_id")
         print(Serviceproviderid)
-        obj=Payment.objects.filter(SERVICEPROVIDERLID=Serviceproviderid).select_related('USERLID')
+        
+        # Use select_related to join related tables efficiently
+        obj = Payment.objects.filter(SERVICE_ID=Serviceproviderid).select_related('ACCOUNT_ID', 'ACCOUNT_ID__USERLID')
         print(obj)
-        return render(request,"ViewEventpayment.html",{'val':obj})
+        
+        return render(request, "ViewEventpayment.html", {'val': obj})
+
      
 class View_Eventcomplaint(View):
     def get(self, request):
@@ -85,7 +89,7 @@ class View_Eventcomplaint(View):
         print(Serviceproviderid)
         obj = Complaint.objects.filter(SERVICEPROVIDERID=Serviceproviderid).select_related('USERLID')
         print(obj)
-        return render(request, "CamComplaint.html", {'val': obj})
+        return render(request, "EveComplaint.html", {'val': obj})
 
     def post(self, request):
         complaint_id = request.POST.get('complaintId')

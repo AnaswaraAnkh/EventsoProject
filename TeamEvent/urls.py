@@ -18,7 +18,7 @@ urlpatterns = [
     path('Cancel_EventBooking/<int:E_id>/',Cancel_EventBooking.as_view(),name='Cancel_EventBooking'),
     path('Adddecors',Adddecors.as_view(),name='Adddecors'),
     path('AddfoodMenu',AddfoodMenu.as_view(),name='AddfoodMenu'),
-    path('AddEventgallery',AddEventgallery.as_view(),name='AddEventgallery'),
+    path('upload-image',AddEventgallery.as_view() , name='upload_image'),
     path('logout/', auth_views.LogoutView.as_view(), name='logout'),
     
 

@@ -5,7 +5,8 @@ from django.views import View
 
 from Admin.models import LoginTable
 from Cameraman.form import CameramanForm, GalleryImageForm, PhotographySkillForm
-from Cameraman.models import  CameraBooking, CameraManProfile
+from Cameraman.models import  CameraBooking, CameraManProfile, GalleryImage
+from TeamEvent.form import EvegalleryForm
 from User_Profile.models import Complaint, Payment, Rating_Review_Table
 
 # Create your views here.
@@ -73,29 +74,35 @@ class Addskils(View):
 
         return HttpResponse('''<script>alert("Failed to add skill. Please try again.");window.location="/cam/Addskils"</script>''')
     
-class uploadImages(View):
- def get(self,request):
-    return render(request,"Manage gallery.html")
- def post(self,request):
-        print("dfghj")
-        form=GalleryImageForm(request.POST,request.FILES)   
+class AddCamGallery(View):
+    def get(self, request):
+        Camid = request.session.get("user_id")
+        obj=GalleryImage.objects.filter(LOGINID=Camid)
+        return render(request, "CamGallery.html",{'images':obj})
+    def post(self, request):
+        # Retrieve the user ID from the session
+        camid = request.session.get("user_id")
+        if not camid:
+            return render(request, "CamGallery.html", {
+                "error": "User not logged in or session expired.",
+                "form": EvegalleryForm(),
+                "images": GalleryImage.objects.all(),
+            })
+
+        # Handle the form submission
+        form = EvegalleryForm(request.POST, request.FILES)
         if form.is_valid():
-            # Get the current user from the session
-            user_id = request.session.get("user_id")
-            try:
-                # Get the login object
-                login_object = LoginTable.objects.get(id=user_id)
+            gallery_image = form.save(commit=False)  # Create the instance but don't save it yet
+            gallery_image.LOGINID_id = camid  # Assign the foreign key
+            gallery_image.save()  # Save the instance to the database
+            return HttpResponse('''<script>alert("Added");window.location="/event/upload-image"</script>''')  # Redirect to the gallery page or any other desired URL
 
-               
-                Gallimg = form.save(commit=False)  # Don't save to DB yet
-                Gallimg.LOGINID = login_object  # Assign the login object
-                Gallimg.save()  # Now save it to the DB
-                return HttpResponse('''<script>alert("Successfully Added!");window.location="/"</script>''')
-            except LoginTable.DoesNotExist:
-                return HttpResponse('''<script>alert("Failed to find user. Please log in again.");window.location="/Addskils"</script>''')
+        # If the form is not valid, re-render the form with errors
+        images = GalleryImage.objects.all()
+        return render(request, "CamGallery.html", {'images': images, 'form': form, 'error': form.errors})
 
-        return HttpResponse('''<script>alert("Failed to add Image. Please try again.");window.location="/Addskils"</script>''')
- 
+
+
 
 
 class ViewBooking(View):
@@ -158,12 +165,15 @@ class CamComplaint(View):
 
 
 class ViewCamPayment(View):
-    def get(self,request):
-        Serviceproviderid= request.session.get("user_id")
+    def get(self, request):
+        Serviceproviderid = request.session.get("user_id")
         print(Serviceproviderid)
-        obj=Payment.objects.filter(SERVICEPROVIDERLID=Serviceproviderid).select_related('USERLID')
+        
+        # Use select_related to join related tables efficiently
+        obj = Payment.objects.filter(SERVICE_ID=Serviceproviderid).select_related('ACCOUNT_ID', 'ACCOUNT_ID__USERLID')
         print(obj)
-        return render(request,"ViewCamPayment.html",{'val':obj})
+        
+        return render(request, "ViewCamPayment.html", {'val': obj})
 
 
 

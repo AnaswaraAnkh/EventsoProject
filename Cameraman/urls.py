@@ -25,7 +25,7 @@ urlpatterns = [
     path('ServiceSelection/',ServiceSelection.as_view(),name="ServiceSelection"),
     path('CameraManreg/', CameraManreg.as_view(), name="CameraManreg"),
     path('Addskils',Addskils.as_view(),name="Addskils"),
-    path('uploadImages',uploadImages.as_view(),name='uploadImages'),
+    path('AddCamGallery',AddCamGallery.as_view(),name='AddCamGallery'),
     path('ViewBooking',ViewBooking.as_view(),name='ViewBooking'),
     path('Accept_Booking/<int:B_id>/',Accept_Booking.as_view(),name='Accept_Booking'),
     path('Cancel_Booking/<int:B_id>/',Cancel_Booking.as_view(),name='Cancel_Booking'),
@@ -36,5 +36,4 @@ urlpatterns = [
     
 
     
-   
 ]

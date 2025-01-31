@@ -16,7 +16,7 @@
         /* From Uiverse.io by bhaveshxrawat */ 
         .card {
             width: 390px;
-            height: 254px;
+            height: 340px;
             background: #07182E;
             position: relative;
             display: flex;
@@ -36,7 +36,18 @@
             margin-bottom: 10px;
         }
 
+        .divone {
+            z-index: 1;
+            font-size: 1em; /* Adjusted for readability */
+            margin-bottom: 10px;
+        }
+
         .card p {
+            z-index: 1;
+            margin: 5px 0;
+        }
+
+        .card h3 {
             z-index: 1;
             margin: 5px 0;
         }
@@ -128,6 +139,25 @@
             border-radius: 5px;
             cursor: pointer;
         }
+        .card-links a {
+            background-color: #00B7FF;
+            color: white;
+            text-decoration: none;
+            font-weight: bold;
+            padding: 12px 20px;
+            border-radius: 8px;
+            text-align: center;
+            transition: background-color 0.3s ease, transform 0.3s ease;
+            display: block;
+        }
+        .card-links {
+            display: flex;
+            flex-direction: column; /* Stack the links vertically */
+           
+           
+            width: 100%;
+        }
+        
     </style>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css">
 </head>
@@ -142,25 +172,12 @@
             <h2>{{ item.event.EventName }}</h2>
             <p>{{ item.event.Place }}</p>
             <p>{{ item.event.Phone }}</p>
-            <!-- {% if item.ratings %}
-            <p>
-                {% for rating in item.ratings %}
-                    {% for star in "★★★★★" %}
-                        {% if forloop.counter <= rating %}
-                            {{ star }}  <!-- Filled star -->
-                        <!-- {% else %} -->
-                            <!-- ☆  Empty star -->
-                        <!-- {% endif %}
-                    {% endfor %}
-                {% endfor %}
-            </p>
-        {% else %}
-            <p>No ratings available</p> -->
-        <!-- {% endif %}  -->
+            <div class="card-links">
             <a href="EventDetails/{{item.event.LOGINID}}">KNOW MORE</a>
             <a href="Eventgallery/{{item.event.LOGINID}}">GALLERY</a>
             <a href="EventBookingView/{{item.event.LOGINID}}">Book Now</a>
-           
+            <a href="Vieweventrating/{{item.event.LOGINID}}">Rating</a>
+           </div>
         </div>
         {% endfor %}
     </div>

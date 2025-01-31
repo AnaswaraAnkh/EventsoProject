@@ -11,6 +11,9 @@ urlpatterns = [
     path('MakeupBooking',MakeupBooking.as_view(),name="MakeupBooking"),
     path('Accept_MakeupBooking/<int:M_id>/',Accept_MakeupBooking.as_view(),name='Accept_MakeupBooking'),
     path('Cancel_MakeupBooking/<int:M_id>/',Cancel_MakeupBooking.as_view(),name='Cancel_MakeupBooking'),
-    path('View_MakPayment',View_MakPayment.as_view(),name='View_MakPayment'),
+    path('View_MakPayment',ViewMakPayment.as_view(),name='View_MakPayment'),
+    path('Addmakeupgallery',Addmakeupgallery.as_view(),name="Addmakeupgallery"),
+    path('View_Makcomplaint',View_Makcomplaint.as_view(),name="View_Makcomplaint"),
+    path('MakViewRating_Review',MakViewRating_Review.as_view(),name="MakViewRating_Review")
 
 ]

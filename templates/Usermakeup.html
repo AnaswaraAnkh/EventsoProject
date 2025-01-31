@@ -5,16 +5,18 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Makeup Artists</title>
     <style>
+        /* Container to align cards horizontally */
         .card-container {
             display: flex;
             flex-wrap: wrap;
-            gap: 20px;
-            justify-content: center;
+            gap: 20px; /* Adds spacing between cards */
+            justify-content: center; /* Centers the cards horizontally */
         }
 
+        /* From Uiverse.io by bhaveshxrawat */ 
         .card {
             width: 390px;
-            height: 300px;
+            height: 310px;
             background: #07182E;
             position: relative;
             display: flex;
@@ -36,11 +38,16 @@
 
         .divone {
             z-index: 1;
-            font-size: 1em;
+            font-size: 1em; /* Adjusted for readability */
             margin-bottom: 10px;
         }
 
-        .card h3, .card p {
+        .card p {
+            z-index: 1;
+            margin: 5px 0;
+        }
+
+        .card h3 {
             z-index: 1;
             margin: 5px 0;
         }
@@ -53,12 +60,104 @@
             margin-top: 10px;
         }
 
-        .card .rating-stars {
-            z-index: 1;
-            font-size: 1.2em;
-            color: gold;
+        .card::before {
+            content: '';
+            position: absolute;
+            width: 100px;
+            background-image: linear-gradient(180deg, rgb(0, 183, 255), rgb(255, 48, 255));
+            height: 130%;
+            animation: rotBGimg 3s linear infinite;
+            transition: all 0.2s linear;
         }
 
+        @keyframes rotBGimg {
+            from {
+                transform: rotate(0deg);
+            }
+            to {
+                transform: rotate(360deg);
+            }
+        }
+
+        .card::after {
+            content: '';
+            position: absolute;
+            background: #07182E;
+            inset: 5px;
+            border-radius: 15px;
+        }
+
+        .modal {
+            display: none; /* Hidden by default */
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.5);
+            align-items: center;
+            justify-content: center;
+            z-index: 1000; /* Ensure modal is on top */
+        }
+
+        .modal-content {
+            background-color: #fff;
+            padding: 20px;
+            border-radius: 10px;
+            width: 400px;
+            max-width: 90%;
+            box-sizing: border-box;
+            text-align: left;
+        }
+
+        .modal-header {
+            font-size: 1.5em;
+            margin-bottom: 10px;
+        }
+
+        .close-btn {
+            float: right;
+            font-size: 1.5em;
+            cursor: pointer;
+            color: #000;
+        }
+
+        .modal textarea {
+            width: 100%;
+            padding: 10px;
+            margin: 10px 0;
+            border-radius: 5px;
+            resize: vertical;
+            box-sizing: border-box;
+        }
+
+        .submit-btn {
+            background-color: #00B7FF;
+            color: white;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+        .card-links a {
+            background-color: #00B7FF;
+            color: white;
+            text-decoration: none;
+            font-weight: bold;
+            padding: 12px 20px;
+            border-radius: 8px;
+            text-align: center;
+            transition: background-color 0.3s ease, transform 0.3s ease;
+            display: block;
+        }
+        .card-links {
+            display: flex;
+            flex-direction: column; /* Stack the links vertically */
+           
+           
+            width: 100%;
+        }
+        
     </style>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css">
 </head>
@@ -69,33 +168,19 @@
             <h2>{{ artist_data.artist.MakeupArtist }}</h2>
             <h3>{{ artist_data.artist.Address }}</h3>
             
-            <!-- Display Ratings as Stars -->
-            <!-- <div class="rating-stars">
-                {% if artist_data.ratings %}
-                    {% for rating in artist_data.ratings %}
-                        {% for i in "12345" %}
-                            {% if forloop.counter <= rating %}
-                                <i class="fa fa-star"></i>
-                            {% else %}
-                                <i class="fa fa-star-o"></i>
-                            {% endif %}
-                        {% endfor %}
-                        <br> <!-- Adds a line break between different ratings if multiple ratings exist -->
-                    {% endfor %}
-                {% else %}
-                    <p>No ratings available</p>
-                {% endif %}
-            </div> -->
-
+          
+        
             <div class="divone">
                 <label>Specialized in:</label>
                 <input type="radio" value="Bride" {% if artist_data.artist.Specialised == "bride" %}checked{% endif %}>Bride
                 <input type="radio" value="Groom" {% if artist_data.artist.Specialised == "groom" %}checked{% endif %}>Groom 
                 <input type="radio" value="Both" {% if artist_data.artist.Specialised == "both" %}checked{% endif %}>Both
             </div>
-            
-            <a href="MakeupGallery/{{ artist_data.artist.LOGINID }}">Gallery</a>
+            <div class="card-links">
+            <a href="ViewMakeupGallery/{{ artist_data.artist.LOGINID }}">Gallery</a>
             <a href="Makeupuserbooking/{{ artist_data.artist.LOGINID }}">Book Now</a>
+            <a href="Viewmakeuprating/{{ artist_data.artist.LOGINID }}">Rating</a>
+        </div>
         </div>
         {% endfor %}
     </div>
